@@ -34,10 +34,17 @@ const blogSchema = new mongoose.Schema({
         required: true,
         default: false,
     },
+    tags: {
+        type: [String]
+    },
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+    }]
 
 
 }, { timestamps: true })
 
 blogSchema.plugin(mongooseAggregatePaginate)
 
-export const Blog = mongoose.Schema("Blog", videoSchema)
+export const Blog = mongoose.model("Blog", blogSchema)

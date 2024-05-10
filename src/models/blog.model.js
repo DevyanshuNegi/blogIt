@@ -40,8 +40,26 @@ const blogSchema = new mongoose.Schema({
     comments: [{
         type: Schema.Types.ObjectId,
         ref: 'Comment'
-    }]
-
+    }],
+    tags: {
+        type: [String],
+        enum: [
+            'writing',
+            'photography',
+            'design',
+            'tutorials',
+            'travel',
+            'fashion',
+            'food',
+            'marketing',
+            'technology',
+            'productivity',
+            'self-care',
+            'motivation',
+            // Add your niche-specific tags here
+        ],
+        default: []
+    }
 
 }, { timestamps: true })
 

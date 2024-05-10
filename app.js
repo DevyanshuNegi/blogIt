@@ -2,8 +2,6 @@ import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 
-import expressEjsLayouts from "express-ejs-layouts";
-// for express layouts
 
 const app = express()
 
@@ -27,17 +25,12 @@ app.set('view engine', 'ejs');
 
 // Other middleware and route handlers...
 
-// import userRouter from "./routes/user.routes.js"
+import userRouter from "./src/routes/user.routes.js"
+import homeRouter from "./src/routes/home.routes.js"
 
-// app.use("/api/v1/users", userRouter)
+app.use("/api/v1/users", userRouter)
 
-
-
-
-app.get("/home", (req, res) => {
-    // res.send("HEllo world")
-    res.render("pages/home.ejs")
-})
+app.use("/home", homeRouter)
 
 
 export default app;

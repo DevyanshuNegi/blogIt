@@ -27,8 +27,11 @@ app.set('view engine', 'ejs');
 
 import userRouter from "./src/routes/user.routes.js"
 import homeRouter from "./src/routes/home.routes.js"
+import blogRouter from "./src/routes/blog.routes.js"
 
 app.use("/api/v1/users", userRouter)
+
+app.use("/api/v1/blogs", blogRouter)
 
 app.use("/home", homeRouter)
 

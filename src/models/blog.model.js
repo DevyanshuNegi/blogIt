@@ -6,6 +6,7 @@ const blogSchema = new mongoose.Schema({
         type: String,
         requierd: true,
         trim: true,
+        index: true // Add index for faster search
     },
     content: {
         type: String,
@@ -33,8 +34,7 @@ const blogSchema = new mongoose.Schema({
     },
     isPublished: {
         type: Boolean,
-        required: true,
-        default: false,
+        default: true,
     },
     // tags: {
     //     type: [String]

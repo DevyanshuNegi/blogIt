@@ -47,7 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
     console.log(isEmpty);
 
     if (isEmpty) {
-        throw new ApiError(401, "All fields are required");
+        throw new ApiError(422, "All fields are required");
     }
 
     // checking already existing
@@ -107,7 +107,7 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     if (!password) {
-        throw new ApiError(401, "password is required");
+        throw new ApiError(422, "password is required");
     }
 
     // checking already existing

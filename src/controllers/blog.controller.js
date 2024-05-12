@@ -5,6 +5,7 @@ import { asyncHandler } from "../utils/asyncHandler.js"
 import bcrypt from "bcrypt"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { ErrorSharp } from "@mui/icons-material";
 
 
 const createBlog = asyncHandler(async (req, res) => {
@@ -24,6 +25,11 @@ const createBlog = asyncHandler(async (req, res) => {
 
     console.log(title, content, category, description, isPublished);
 
+    var newcategory = category; // to convier string to list
+    if(typeof(category)=="string") {
+        newcategory = category.split(", ");
+    }
+
     const localFilePath = req.file.path
 
     const isEmpty = [title, content, localFilePath].some(field => !field || field.trim() === "");
@@ -33,15 +39,21 @@ const createBlog = asyncHandler(async (req, res) => {
 
     const thumbnail = await uploadOnCloudinary(localFilePath)
 
+    /**remove this code */
+    var max = 700
+    var min = 70
+    const views = Math.floor(Math.random() * (max - min + 1)) + min;
+
     const blog = await Blog.create(
         {
             title: title,
             content: content,
             author: user._id,
-            category: category,
+            category: newcategory,
             description: description,
             thumbnail: thumbnail.url,
-            isPublished: isPublished
+            isPublished: isPublished,
+            views: views /** remove this code */
         }
     )
 
@@ -56,8 +68,20 @@ const createBlog = asyncHandler(async (req, res) => {
 })
 
 const getRandomTen = asyncHandler(async (req, res) => {
+    /**
+     * get list of 10-15 blogs from the db
+     */
 
+    const blogs = Blog.aggregate([
+        { $sample: { size: 15 }}
+    ])
+
+    if(!blogs) {
+        throw new ApiError(404, "Blogs not found ");
+    }
+
+    res.status(200)
+    .json(new ApiResponse(200, blogs,"Blog responses from db"))
 })
 
 export { createBlog, getRandomTen }
-// git commit -m"created blog routes and createBlog controller"

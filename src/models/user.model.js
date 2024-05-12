@@ -55,7 +55,6 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 }
 
 userSchema.methods.generateAccessToken = function () {  //  JWTs securely transmit information between parties. The signature ensures the sender’s authenticity, and the content remains tamper-proof. Just before transmitting user sensitive data to database ,we have hashed (or encrypted ) it .A token is a piece of data that serves as a form of credentials or proof of identity
-    console.log("INSIDE GENERATE ACCESS TOKEN")
     return jwt.sign(
         {
             _id: this._id,

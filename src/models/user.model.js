@@ -24,10 +24,10 @@ const userSchema = new mongoose.Schema({
         trim: true,
         index: true
     },
-    watchHistory: {
-        type: Schema.Types.ObjectId,
-        ref: "Blog"
-    },
+    // watchHistory: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: "Blog"
+    // },
     password: {
         type: String,
         required: [true, 'Password is required'],

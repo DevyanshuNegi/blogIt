@@ -72,9 +72,11 @@ const getRandomTen = asyncHandler(async (req, res) => {
      * get list of 10-15 blogs from the db
      */
 
-    const blogs = Blog.aggregate([
-        { $sample: { size: 15 }}
+    const blogs = await Blog.aggregate([
+        { $sample: { size: 10 }}
     ])
+
+    // console.log(blogs)
 
     if(!blogs) {
         throw new ApiError(404, "Blogs not found ");
@@ -84,4 +86,17 @@ const getRandomTen = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, blogs,"Blog responses from db"))
 })
 
-export { createBlog, getRandomTen }
+const getPopular = asyncHandler(async (req, res) => {
+    const blogs = await Blog.find({}) // Find all blogs
+        .sort({ views: -1 }) // Sort by views in descending order (most viewed first)
+        .limit(5) // Limit the results to 5 documents
+    
+    if(!blogs) {
+        throw new ApiError(404, "Blogs not found");
+    }
+
+    res.status(200)
+    .json(new ApiResponse(200, blogs, "Blog responses from db are here "));
+})
+
+export { createBlog, getRandomTen, getPopular }

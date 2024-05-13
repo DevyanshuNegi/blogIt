@@ -75,3 +75,38 @@ hr.h-color {
     color: orangered;
     font-size: 30px;
 }
+
+.categories-list{
+    list-style: none;
+}
+
+.categories-list li{
+    
+    background-color: grey;
+    margin: 2px;
+    padding: 3px 6px;
+    border-radius: 20px;
+}
+
+.categories-list li a {
+    text-decoration: none;
+    color: white;
+}
+.center-thumbnail {
+    height: 180px;
+    object-fit: cover;
+}
+
+.center-content-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Optional properties for better rendering */
+    white-space: normal;
+    /* Adjust font-size and line-height if needed */
+    font-size: 16px;
+    line-height: 1.5;
+}

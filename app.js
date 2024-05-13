@@ -33,6 +33,8 @@ app.use("/api/v1/users", userRouter)
 
 app.use("/api/v1/blogs", blogRouter)
 
+
+// front end routes
 app.use("/home", homeRouter)
 
 

@@ -2,6 +2,8 @@ import { Router } from "express"
 import app from "../../app.js"
 import { getRandomTen } from "../controllers/blog.controller.js";
 import axios from "axios";
+import { User } from "../models/user.model.js";
+import { Blog } from "../models/blog.model.js"; 
 
 
 const router = Router()
@@ -50,20 +52,12 @@ router.route('/blog').get(async (req, res) => {
         // const blog = await findBlogById(blogId); // Replace with your logic to find blog by ID
         const blogDetails = await axios.get("http://localhost:" + (process.env.PORT || 8000) + `/api/v1/blogs/getBlogDetails?id=${blogId}`);
 
-        res.render('pages/blogDetails.ejs', { blogDetails });
+        const blog = blogDetails.data.data
+        res.render('pages/blogDetails.ejs', { blog });
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Error fetching blog details');
     }
 });
-
-
-// for (let heading = 0; heading < headingList.length; heading++) {
-//     app.get(("/" + headingList[heading]).replaceAll(" ", "%20"), (req, res) => {
-//         var currBlog = { heading: headingList[heading], blogText: blogTextList[heading] }
-//         res.render("readelement.ejs", currBlog);
-//         console.log(heading);
-//     })
-// }
 
 export default router;

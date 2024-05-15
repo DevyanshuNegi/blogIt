@@ -35,7 +35,7 @@ app.use("/api/v1/blogs", blogRouter)
 
 
 // front end routes
-app.use("/home", homeRouter)
+app.use("/", homeRouter)
 
 
 export default app;

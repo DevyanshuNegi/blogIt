@@ -6,6 +6,7 @@ import bcrypt from "bcrypt"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ErrorSharp } from "@mui/icons-material";
+import mongoose from "mongoose";
 
 
 const createBlog = asyncHandler(async (req, res) => {
@@ -26,7 +27,7 @@ const createBlog = asyncHandler(async (req, res) => {
     console.log(title, content, category, description, isPublished);
 
     var newcategory = category; // to convier string to list
-    if(typeof(category)=="string") {
+    if (typeof (category) == "string") {
         newcategory = category.split(", ");
     }
 
@@ -57,7 +58,7 @@ const createBlog = asyncHandler(async (req, res) => {
         }
     )
 
-    console.log(blog)
+    // console.log(blog)
 
     return res
         .status(200)
@@ -73,34 +74,44 @@ const getRandomTen = asyncHandler(async (req, res) => {
      */
 
     const blogs = await Blog.aggregate([
-        { $sample: { size: 10 }}
+        { $sample: { size: 10 } }
     ])
 
     // console.log(blogs)
 
-    if(!blogs) {
+    if (!blogs) {
         throw new ApiError(404, "Blogs not found ");
     }
 
     res.status(200)
-    .json(new ApiResponse(200, blogs,"Blog responses from db"))
+        .json(new ApiResponse(200, blogs, "Blog responses from db"))
 })
 
 const getPopular = asyncHandler(async (req, res) => {
-    // const blogs = await Blog.find({}) // Find all blogs
-    //     .sort({ views: -1 }) // Sort by views in descending order (most viewed first)
-    //     .limit(5) // Limit the results to 5 documents
 
     const blogs = await Blog.find({})
-    .sort({views: -1})
-    .limit(1)
-    
-    if(!blogs) {
+        .sort({ views: -1 })
+        .limit(1)
+
+    if (!blogs) {
         throw new ApiError(404, "Blogs not found");
     }
 
     res.status(200)
-    .json(new ApiResponse(200, blogs, "Blog responses from db are here "));
+        .json(new ApiResponse(200, blogs, "Blog responses from db are here "));
 })
 
-export { createBlog, getRandomTen, getPopular }
+// Function to retrieve blog details by ID
+const getBlogDetails = asyncHandler(async (req, res) => {
+    const blogId = req.query.id;
+    console.log(blogId);
+    const blog = await Blog.findById(blogId);
+
+    if (!blog) {
+        throw new ApiError(404, 'Blog not found'); // Handle non-existent blog
+    }
+
+    res.status(200).json(new ApiResponse(200, blog, 'Blog detail response'));
+});
+
+export { createBlog, getRandomTen, getPopular, getBlogDetails }

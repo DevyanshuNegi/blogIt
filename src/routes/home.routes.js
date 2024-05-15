@@ -8,12 +8,12 @@ const router = Router()
 
 var blogIdList = [];
 
-router.route("/").get(
+router.route("/home").get(
     async (req, res) => {
         try {
-            const [randomBlogsResponse, 
+            const [randomBlogsResponse,
                 // recentBlogsResponse,
-                 popularBlogResponse
+                popularBlogResponse
 
             ] = await Promise.all([
                 axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/blogs/randomBlogs"),
@@ -27,21 +27,36 @@ router.route("/").get(
             // const recentBlogs = recentBlogsResponse.data.data;
             const popularBlog = popularBlogResponse.data.data;
 
-            console.log(popularBlog)
-            
-            // blogIdList = randomBlogs.map(blog => {
-            //     return blog._id
-            // })
+            blogIdList = randomBlogs.map(blog => { // adding id of blogs to list
+                return blog._id
+            })
 
-            res.render("pages/home.ejs", { randomBlogs,
+            res.render("pages/home.ejs", {
+                randomBlogs,
                 //  recentBlogs, 
-                 popularBlog });
+                popularBlog
+            });
         } catch (error) {
             console.error(error.message);
             res.status(500).json({ message: 'Error fetching blogs from backend' }); // Handle errors gracefully
         }
     })
-console.log(blogIdList)
+router.route('/blog').get(async (req, res) => {
+
+    const blogId = req.query.id;
+    console.log("BLOG ID", blogId);
+
+    try {
+        // const blog = await findBlogById(blogId); // Replace with your logic to find blog by ID
+        const blogDetails = await axios.get("http://localhost:" + (process.env.PORT || 8000) + `/api/v1/blogs/getBlogDetails?id=${blogId}`);
+
+        res.render('pages/blogDetails.ejs', { blogDetails });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Error fetching blog details');
+    }
+});
+
 
 // for (let heading = 0; heading < headingList.length; heading++) {
 //     app.get(("/" + headingList[heading]).replaceAll(" ", "%20"), (req, res) => {

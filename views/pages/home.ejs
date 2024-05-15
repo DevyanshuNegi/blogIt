@@ -12,7 +12,7 @@
         <div class="row row-cols-1 row-cols-lg-2 g-4">
 
           <% randomBlogs.forEach(blog=> { %>
-            <div class="col">
+            <div class="col blog-container" id=<%= blog._id %>>
               <div class="card">
                 <img src=<%= blog.thumbnail %> class="center-thumbnail card-img-top" alt=<%= blog.title %>>
                 <div class="card-body">

@@ -6,21 +6,49 @@ import axios from "axios";
 
 const router = Router()
 
+var blogIdList = [];
+
 router.route("/").get(
-    (req, res) => {
-        axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/blogs/randomBlogs")
-            .then((response) => {
-                // console.log(response.data);
-                const blogs = response.data.data;
+    async (req, res) => {
+        try {
+            const [randomBlogsResponse, 
+                // recentBlogsResponse,
+                 popularBlogResponse
 
-                res.render("pages/home.ejs", {blogs});
+            ] = await Promise.all([
+                axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/blogs/randomBlogs"),
+                // axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/blogs/recent"),
+                axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/blogs/getPopular"),
+            ]);
 
-            }).catch((error) => {
-                // console.log(error);
-                console.log(error.message);
-                res.send("error occored")
-            })
-    }
-)
+            // console.log(popularBlog.data.data)
+
+            const randomBlogs = randomBlogsResponse.data.data;
+            // const recentBlogs = recentBlogsResponse.data.data;
+            const popularBlog = popularBlogResponse.data.data;
+
+            console.log(popularBlog)
+            
+            // blogIdList = randomBlogs.map(blog => {
+            //     return blog._id
+            // })
+
+            res.render("pages/home.ejs", { randomBlogs,
+                //  recentBlogs, 
+                 popularBlog });
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).json({ message: 'Error fetching blogs from backend' }); // Handle errors gracefully
+        }
+    })
+console.log(blogIdList)
+
+// for (let heading = 0; heading < headingList.length; heading++) {
+//     app.get(("/" + headingList[heading]).replaceAll(" ", "%20"), (req, res) => {
+//         var currBlog = { heading: headingList[heading], blogText: blogTextList[heading] }
+//         res.render("readelement.ejs", currBlog);
+//         console.log(heading);
+//     })
+// }
 
 export default router;

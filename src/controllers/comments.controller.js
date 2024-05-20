@@ -8,6 +8,7 @@ import { Comment } from "../models/comment.model.js";
 import ApiError from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiResponse} from "../utils/ApiResponse.js"
+import {User} from "../models/user.model.js"
 
 const addComment = asyncHandler(async (req, res)=> {
 
@@ -38,4 +39,25 @@ const addComment = asyncHandler(async (req, res)=> {
         )
 })
 
-export {addComment};
+const getBlogComments = asyncHandler(async (req, res)=>{
+    const query = req.query;
+    const blogId = query?.id;
+
+    console.log("blog id" , blogId);
+
+    const mostRecentComments = await Comment.find()
+        .sort({ createdAt: -1 })  
+        .limit(10)            
+        .populate("author", 'username')
+
+    console.log(mostRecentComments);
+
+    
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, mostRecentComments, "10 most recent comments")
+    )
+})
+
+export {addComment, getBlogComments};

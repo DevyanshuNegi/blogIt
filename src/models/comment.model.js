@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Schema } from "@mui/icons-material";
+import { Schema } from "mongoose";
 
 const CommentSchema = new Schema({
     content: {
@@ -8,8 +8,8 @@ const CommentSchema = new Schema({
     },
     author: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        ref: "Users",
+        required: true,
     },
     blog: {
         type: Schema.Types.ObjectId,
@@ -21,5 +21,10 @@ const CommentSchema = new Schema({
         default: Date.now
     }
 });
+
+// Indexes for better search and sorting and finding by user and blog
+CommentSchema.index({ author: 1 }); 
+CommentSchema.index({ blog: 1 });   
+
 
 export const Comment = mongoose.model("Comment", CommentSchema)

@@ -107,6 +107,11 @@ const getBlogDetails = asyncHandler(async (req, res) => {
     console.log(blogId);
     const blog = await Blog.findById(blogId);
 
+    blog.views=blog.views+1;
+    await blog.save({validateBeforeSave: false})
+
+    
+
     if (!blog) {
         throw new ApiError(404, 'Blog not found'); // Handle non-existent blog
     }

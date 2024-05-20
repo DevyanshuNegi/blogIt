@@ -4,10 +4,13 @@ import { upload } from "../middlewares/multer.middleware.js"
 import multer from "multer";
 const router = Router();
 import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { addComment } from "../controllers/comments.controller.js";
 
 router.route("/randomBlogs").get(getRandomTen);
 router.route("/getPopular").get(getPopular);
 router.route("/getBlogDetails").get(getBlogDetails);
+
+
 // secured routes
 // here firstly middleware will check if user is logged in
 
@@ -16,6 +19,9 @@ router.route("/create").post(verifyJWT,
         'thumbnail'
     ),
     createBlog);
+
+// add comment to a blog
+router.route("/addComment").post(verifyJWT, addComment);
 
 
 export default router;

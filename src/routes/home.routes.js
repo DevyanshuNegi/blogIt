@@ -32,6 +32,11 @@ router.route("/home").get(
             blogIdList = randomBlogs.map(blog => { // adding id of blogs to list
                 return blog._id
             })
+            for (let index = 0; index < randomBlogs.length; index++) {
+                const element = randomBlogs[index];
+                const created = randomBlogs[index].createdAt.split('T');
+                randomBlogs[index].createdAt = created[0];
+            }
 
             res.render("pages/home.ejs", {
                 randomBlogs,

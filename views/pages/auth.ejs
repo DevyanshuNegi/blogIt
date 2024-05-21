@@ -19,7 +19,7 @@
         <!-- Pills content -->
         <div class="tab-content">
             <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-                <form>
+                <form action="/login" method="post">
                     <div class="text-center mb-3">
                         <p>Sign in with: (in progress)</p>
                         <button type="button" data-mdb-button-init data-mdb-ripple-init
@@ -42,13 +42,13 @@
 
                     <!-- Email input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="email" id="loginName" class="form-control" />
+                        <input type="email" id="loginName" class="form-control" name="email" />
                         <label class="form-label" for="loginName">Email or username</label>
                     </div>
 
                     <!-- Password input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="password" id="loginPassword" class="form-control" />
+                        <input type="password" id="loginPassword" class="form-control" name="password"/>
                         <label class="form-label" for="loginPassword">Password</label>
                     </div>
 
@@ -80,7 +80,7 @@
                 </form>
             </div>
             <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-                <form method="post" action="/send">
+                <form method="post" action="/signin">
                     <div class="text-center mb-3">
                         <p>Sign up with: (In Progress)</p>
                         <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
@@ -100,25 +100,25 @@
 
                     <!-- Name input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="text" id="registerName" class="form-control" />
-                        <label class="form-label" for="registerName">Name</label>
+                        <input type="text" id="registerName" class="form-control"  name="FullName"/>
+                        <label class="form-label" for="registerName">Full Name</label>
                     </div>
 
                     <!-- Username input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="text" id="registerUsername" class="form-control" />
+                        <input type="text" id="registerUsername" class="form-control" name="username" />
                         <label class="form-label" for="registerUsername">Username</label>
                     </div>
 
                     <!-- Email input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="email" id="registerEmail" class="form-control" />
+                        <input type="email" id="registerEmail" class="form-control" name="email" />
                         <label class="form-label" for="registerEmail">Email</label>
                     </div>
 
                     <!-- Password input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="password" id="registerPassword" class="form-control" />
+                        <input type="password" id="registerPassword" class="form-control" name="password"/>
                         <label class="form-label" for="registerPassword">Password</label>
                     </div>
 

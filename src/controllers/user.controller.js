@@ -38,6 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
     fetch by user id 
     give response 
     */
+   console.log(req)
 
     const { username, fullName, password, email } = req.body;
     console.log(username, fullName, password, email);
@@ -47,6 +48,7 @@ const registerUser = asyncHandler(async (req, res) => {
     console.log(isEmpty);
 
     if (isEmpty) {
+        return res.send("All fields are required")
         throw new ApiError(422, "All fields are required");
     }
 
@@ -99,6 +101,8 @@ const loginUser = asyncHandler(async (req, res) => {
     update refresh token in db
     pass refresh and access token in cookies
     */
+
+    console.log(req)
     const { username, email, password } = req.body;
     console.log(username, email, password);
 

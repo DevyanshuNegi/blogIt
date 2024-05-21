@@ -8,6 +8,8 @@ import { Blog } from "../models/blog.model.js";
 
 const router = Router()
 
+var errormsg = null;
+
 var blogIdList = [];
 
 router.route("/home").get(
@@ -77,7 +79,7 @@ router.route('/blog').get(async (req, res) => {
 
         const blog = blogDetails.data.data
         blog.createdAt = blog.createdAt.split('T')[0]
-        res.render('pages/blogDetails.ejs', { blog, comments});
+        res.render('pages/blogDetails.ejs', { blog, comments });
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Error fetching blog details');
@@ -86,8 +88,52 @@ router.route('/blog').get(async (req, res) => {
 
 
 
-router.route('/auth').get(async(req, res) => {
-    res.render("pages/auth.ejs")
+router.route('/auth').get(async (req, res) => {
+    res.render("pages/auth.ejs", { errormsg })
+})
+
+router.route('/login').post(async (req, res) => {
+    console.log(req.body)
+    // const formData = new FormData();
+    // formData.append("email", req.body.email);
+    // formData.append("password", req.body.password);
+    // console.log(formData)
+    var statuscode = 0;
+    try {
+        const login = await axios.post("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/users/login", req.body)
+        console.log("response ", login.data)
+        statuscode = login.status;
+        errormsg = login.data.message;
+        res.send(login)
+    } catch (error) {
+        console.log("error", error.message)
+    }
+
+    if (statuscode == 200) {
+        errormsg = null;
+        res.redirect("/home")
+    }
+    else {
+        res.redirect("/auth")
+    }
+});
+
+router.route('/signin').post(async (req, res) => {
+    console.log(req.body)
+    // const formData = new FormData();
+    // formData.append("email", req.body.email);
+    // formData.append("password", req.body.password);
+    // formData.append("username", req.body.username);
+    // formData.append("fullName", req.body.fullName);
+    try {
+        const register = await axios.post("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/users/register", req.body)
+        console.log("response ", register)
+
+    } catch (error) {
+        console.log("error", error.message)
+    }
+
+    res.send("Signin")
 })
 
 export default router;

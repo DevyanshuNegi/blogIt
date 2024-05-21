@@ -2,6 +2,11 @@ body {
     background: #eee;
 }
 
+.home-center-content{
+    padding-left: 280px;
+    padding-right: 20px;
+}
+
 .sidebar-list a {
     text-decoration: none;
 }
@@ -189,4 +194,24 @@ hr.h-color {
 .popular-image-card-div {
     background-color: rgba(0, 0, 0, 0.4) !important;
     height: 300px;
+}
+
+.home-our-stories{
+    /* text-align: center; */
+    /* background-color: grey; */
+}
+
+i{
+    margin-right: 8px;
+}
+
+.blog-details-title p{
+    color: rgb(219, 219, 219);
+}
+
+.blog-details-comment-date{
+    color: rgb(83, 83, 83);
+    font-weight: 400;
+    margin-left: 60px;
+
 }

@@ -45,12 +45,12 @@ const getBlogComments = asyncHandler(async (req, res)=>{
 
     console.log("blog id" , blogId);
 
-    const mostRecentComments = await Comment.find()
+    const mostRecentComments = await Comment.find({ blog: blogId })
         .sort({ createdAt: -1 })  
         .limit(10)            
         .populate("author", 'username')
 
-    console.log(mostRecentComments);
+    // console.log("INSIDE CONTROLLER", mostRecentComments);
 
     
     return res

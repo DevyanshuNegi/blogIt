@@ -5,6 +5,7 @@ import multer from "multer";
 const router = Router();
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { addComment , getBlogComments} from "../controllers/comments.controller.js";
+import { checkUserAuth } from "../middlewares/user.middleware.js";
 
 router.route("/randomBlogs").get(getRandomTen);
 router.route("/getPopular").get(getPopular);

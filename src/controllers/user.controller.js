@@ -242,6 +242,20 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 })
 
+const isLogedIn = asyncHandler(async (req, res) => {
+    /**
+     *  get the user from middleware
+     * return the user
+     */
+
+    const user = req.user;
+    if(user===null) {
+        return res.status(200).json(new ApiResponse(200, null, "User not logged in"))
+    }
+    return res.status(200).json(new ApiResponse(200, user, "User logged in"))
+
+})
+
 const changeCurrentPassword = asyncHandler(async (req, res) => {
     /**
      * get the oldPassword and newPassword
@@ -270,5 +284,5 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 })
 
-export { loginUser, registerUser, logoutUser, refreshAccessToken,
+export { loginUser, registerUser, logoutUser, refreshAccessToken, isLogedIn,
      changeCurrentPassword }

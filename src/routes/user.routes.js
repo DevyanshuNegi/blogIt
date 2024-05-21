@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { loginUser, registerUser, logoutUser, refreshAccessToken  } from "../controllers/user.controller.js";
+import { loginUser, registerUser, logoutUser, refreshAccessToken, isLogedIn  } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { checkUserAuth } from "../middlewares/user.middleware.js";
 
 const router = Router()
 
@@ -21,6 +22,8 @@ router.route("/register").post( // MW, mainFunction
 )
 
 router.route("/login").post(loginUser)
+router.route("/checkUserLoggedIn").get(checkUserAuth, isLogedIn)
+
 // router.route("/register").post(registerUser) 
 
 // register method is called
@@ -35,5 +38,6 @@ router.route("/logout").post(verifyJWT,// this mw will run first and you can add
     logoutUser)
 
 router.route("/refresh-token").post(refreshAccessToken)
+
 
 export default router

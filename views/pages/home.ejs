@@ -5,25 +5,47 @@
     <!-- content after sidebar -->
     <div class="row">
 
-      <div class="col-md-9 col-sm-12 pt-4" style="padding-left: 280px; padding-right: 20px;">
+      <div class="home-center-content col-md-9 col-sm-12 pt-4">
         <!-- Center content must be here -->
-        <h3><i class="bi bi-heart-fill"></i> Our Stories</h3>
+
+        <div class="position-relative">
+
+          <h3 class="home-our-stories d-inline">&emsp;<i class="bi bi-heart-fill"></i>&emsp; Our Stories</h3>
+          <!-- <button class="btn btn-info position-absolute" style="right: 20px;">SingUp/Login</button> -->
+          <% if (user==null) { %>
+            <a href="/login" class="btn btn-info position-absolute" style="right: 20px;">Login/SignUp</a>
+
+            <% } else { %>
+              <a href="/logout" class="btn btn-info position-absolute" style="right: 20px;">Logout</a>
+              <% } %>
+        </div>
         <hr>
+
+        <p> user <%= user %></p>
+
         <div class="row row-cols-1 row-cols-lg-2 g-4">
 
           <% randomBlogs.forEach(blog=> { %>
-            <div class="col blog-container" id=<%= blog._id %>>
+            <div class="col blog-container" id=<%=blog._id %>>
               <div class="card">
-                <img src=<%= blog.thumbnail %> class="center-thumbnail card-img-top" alt=<%= blog.title %>>
-                <div class="card-body">
-                  <h5 class="card-title"><%= blog.title %></h5>
-                  <p class="card-text center-content-text"><%= blog.content %></p>
-                  <div class="blog-details d-flex gap-3">
+                <img src=<%=blog.thumbnail %> class="center-thumbnail card-img-top" alt=<%= blog.title %>>
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <%= blog.title %>
+                    </h5>
+                    <p class="card-text center-content-text">
+                      <%= blog.content %>
+                    </p>
+                    <div class="blog-details d-flex gap-3">
 
-                    <p><i class="bi bi-activity"></i> <%= blog.views %> views</p>
-                    <p><i class="bi bi-clock"></i> <%= blog.createdAt %></p>
+                      <p><i class="bi bi-activity"></i>
+                        <%= blog.views %> views
+                      </p>
+                      <p><i class="bi bi-clock"></i>
+                        <%= blog.createdAt %>
+                      </p>
+                    </div>
                   </div>
-                </div>
               </div>
             </div>
             <% }) %>
@@ -35,17 +57,21 @@
 
       <!-- right side extra content -->
       <div class="col-3 d-none d-md-block">
-        <div style="top: 2rem;"> 
+        <div style="top: 2rem;">
           <!-- class="position-sticky"  to the div for scroll lock -->
-          <h4 class="fst-italic my-3">Popular</h4>
+          <h3>Search</h3>
+          <h4 class="fst-italic my-3">Popular posts</h4>
           <div class="card popular-image-card-div text-light" style="width: 100%;">
-            <div class="popular-image blog-container" id=<%= popularBlog[0]._id %>>
-              <img src=<%= popularBlog[0].thumbnail %> class="card-img-top popular-thumbnail" alt=<%= popularBlog[0].title %>>
+            <div class="popular-image blog-container" id=<%=popularBlog[0]._id %>>
+              <img src=<%=popularBlog[0].thumbnail %> class="card-img-top popular-thumbnail" alt=<%=
+                popularBlog[0].title %>>
 
-              <div class="card-body pl-3">
-                <h4><%= popularBlog[0].title %></h4>
-                <!-- <p class="card-text "><%= popularBlog[0].content %></p> -->
-              </div>
+                <div class="card-body pl-3">
+                  <h4>
+                    <%= popularBlog[0].title %>
+                  </h4>
+                  <!-- <p class="card-text "><%= popularBlog[0].content %></p> -->
+                </div>
             </div>
           </div>
 

@@ -94,28 +94,38 @@ router.route('/auth').get(async (req, res) => {
 
 router.route('/login').post(async (req, res) => {
     console.log(req.body)
-    // const formData = new FormData();
-    // formData.append("email", req.body.email);
-    // formData.append("password", req.body.password);
-    // console.log(formData)
     var statuscode = 0;
+
+    var loginResponse = undefined;
+
     try {
-        const login = await axios.post("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/users/login", req.body)
-        console.log("response ", login.data)
-        statuscode = login.status;
-        errormsg = login.data.message;
-        res.send(login)
+        loginResponse = await axios.post("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/users/login", req.body)
+
+        statuscode = loginResponse.status;
+        errormsg = loginResponse.data.message;
+
+        const accessToken = loginResponse.data.data.accessToken;
+        const refreshToken = loginResponse.data.data.refreshToken;
+        const options = {
+            httpOnly: true,
+            secure: true
+        }
+        res.cookie("accessToken", accessToken, options)
+            .cookie("refreshToken", refreshToken, options)
+
+
+        if (statuscode == 200) {
+            errormsg = null;
+            res.redirect("/home")
+        }
+        else {
+            res.redirect("/auth")
+        }
     } catch (error) {
         console.log("error", error.message)
-    }
-
-    if (statuscode == 200) {
-        errormsg = null;
-        res.redirect("/home")
-    }
-    else {
         res.redirect("/auth")
     }
+
 });
 
 router.route('/signin').post(async (req, res) => {

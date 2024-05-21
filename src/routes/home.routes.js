@@ -84,4 +84,10 @@ router.route('/blog').get(async (req, res) => {
     }
 });
 
+
+
+router.route('/auth').get(async(req, res) => {
+    res.render("pages/auth.ejs")
+})
+
 export default router;

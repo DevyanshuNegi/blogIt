@@ -5,6 +5,7 @@ import axios from "axios";
 import { User } from "../models/user.model.js";
 import { Blog } from "../models/blog.model.js";
 
+axios.defaults.withCredentials = true;
 
 const router = Router()
 
@@ -14,6 +15,8 @@ var blogIdList = [];
 
 router.route("/home").get(
     async (req, res) => {
+        console.log("cookies")
+        console.log(req.cookies)
         try {
             const [randomBlogsResponse,
                 // recentBlogsResponse,
@@ -23,11 +26,14 @@ router.route("/home").get(
                 axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/blogs/randomBlogs"),
                 // axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/blogs/recent"),
                 axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/blogs/getPopular"),
-                axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/users/checkUserLoggedIn")
+                axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/users/checkUserLoggedIn",req.cookies, {
+                    withCredentials: true
+                })
             ]);
 
             // console.log(popularBlog.data.data)
-            console.log(isLoggedIn.data.data)
+            // console.log(isLoggedIn);
+            // console.log(isLoggedIn.data.data)
             const user = isLoggedIn.data.data;
 
             const randomBlogs = randomBlogsResponse.data.data;

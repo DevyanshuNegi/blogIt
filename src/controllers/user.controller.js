@@ -38,7 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
     fetch by user id 
     give response 
     */
-   console.log(req)
+//    console.log(req)
 
     const { username, fullName, password, email } = req.body;
     console.log(username, fullName, password, email);
@@ -102,7 +102,7 @@ const loginUser = asyncHandler(async (req, res) => {
     pass refresh and access token in cookies
     */
 
-    console.log(req)
+    // console.log(req)
     const { username, email, password } = req.body;
     console.log(username, email, password);
 
@@ -251,8 +251,9 @@ const isLogedIn = asyncHandler(async (req, res) => {
      *  get the user from middleware
      * return the user
      */
-
+    console.log("isLoggedIn", req);
     const user = req.user;
+    // console.log(user)
     if(user===null) {
         return res.status(200).json(new ApiResponse(200, null, "User not logged in"))
     }

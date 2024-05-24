@@ -22,7 +22,9 @@
                                 <i class="bi bi-activity"></i> views: <%= blog.views %>
                             </p>
                             <p class="d-flex">
-                                <i class="bi bi-clock"></i> published on : <span class="format-date"><%= blog.createdAt %></span>
+                                <i class="bi bi-clock"></i> published on : <span class="format-date">
+                                    <%= blog.createdAt %>
+                                </span>
                             </p>
                         </div>
                     </div>
@@ -37,27 +39,53 @@
 
             <div class="p-5 blog-details-comments">
                 <h3>Comments</h3>
-                <a class="btn btn-primary" href="/blogs/auth">SignIn to add comment</a>
-                <hr>
+                <% if (user) { %>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Leave a Comment
+                        </div>
 
-                <% comments.forEach(comment=> { %>
-                    <div class="my-4 mx-4">
-
-                        <span>
-                            <h5 class="d-inline">
-                                @<%= comment.author.username %>
-                            </h5>
-                        </span>
-                        <span class="blog-details-comment-date format-date">
-                            <%= comment.createdAt %>
-                        </span>
-                        <p>
-                            &emsp;<%= comment.content %>
-                        </p>
-                        
+                        <!-- Adding comments -->
+                        <div class="card-body">
+                            <form id="comment-form" method="post" action="/blogs/addComment">
+                                <div class="mb-3">
+                                    <!-- <label for="comment-text" class="form-label">Comment</label> -->
+                                    <input type="text" name="blogId" value="<%= blog._id %>" class="d-none">
+                                    <textarea class="form-control" id="comment-text" rows="3"
+                                        placeholder="Enter your comment here..." name="content"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit Comment</button>
+                            </form>
+                        </div>
 
                     </div>
-                    <% }) %>
+
+                    <% } else { %>
+
+                        <a class="btn btn-primary" href="/blogs/auth">SignIn to add comment</a>
+                        <% } %>
+                            <hr>
+
+                            <% comments.forEach(comment=> { %>
+                                <div class="my-4 mx-4">
+                                    <div class="d-flex">
+                                        <span>
+                                            <h5 class="d-inline">
+                                                @<%= comment.author.username %>
+                                            </h5>
+                                        </span>
+                                        <span class="blog-details-comment-date format-date">
+                                            <%= comment.createdAt %>
+                                        </span>
+                                    </div>
+
+                                    <p>
+                                        &emsp;<%= comment.content %>
+                                    </p>
+
+
+                                </div>
+                                <% }) %>
 
             </div>
 

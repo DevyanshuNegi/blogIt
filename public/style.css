@@ -2,7 +2,7 @@ body {
     background: #eee;
 }
 
-.home-center-content{
+.home-center-content {
     padding-left: 280px;
     padding-right: 20px;
 }
@@ -196,23 +196,23 @@ hr.h-color {
     height: 300px;
 }
 
-.home-our-stories{
+.home-our-stories {
     /* text-align: center; */
     /* background-color: grey; */
 }
 
-i{
+i {
     margin-right: 8px;
 }
 
-.blog-details-title p{
+.blog-details-title p {
     color: rgb(219, 219, 219);
 }
 
 
-.format-date{
+.format-date {
     margin-left: 5px;
-display: inline-block;
+    display: inline-block;
     /* Make the content flow inline */
     width: max-content;
     /* Allow content to shrink to fit its width */
@@ -222,7 +222,7 @@ display: inline-block;
     /* Hide content that overflows */
     text-overflow: clip;
     /* Clip overflowing content */
-    max-width: 14ch;
+    width: 13ch;
     /* Adjust as needed (1ch = character width) */
 }
 

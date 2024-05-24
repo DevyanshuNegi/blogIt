@@ -132,10 +132,10 @@ const getBlogDetails = asyncHandler(async (req, res) => {
     console.log(blogId);
     const blog = await Blog.findById(blogId);
 
-    blog.views=blog.views+1;
-    await blog.save({validateBeforeSave: false})
+    blog.views = blog.views + 1;
+    await blog.save({ validateBeforeSave: false })
 
-    
+
 
     if (!blog) {
         throw new ApiError(404, 'Blog not found'); // Handle non-existent blog
@@ -146,10 +146,10 @@ const getBlogDetails = asyncHandler(async (req, res) => {
 
 
 const homePage = asyncHandler(async (req, res) => {
-    var {randomBlogs, popularBlog} = await getHomePageData();
+    var { randomBlogs, popularBlog } = await getHomePageData();
     // console.log(response);
-    var user = null;
-    
+    var user = req.user;
+
     blogIdList = randomBlogs.map(blog => { // adding id of blogs to list
         return blog._id
     })
@@ -168,12 +168,12 @@ const homePage = asyncHandler(async (req, res) => {
 
 const blogDetailPage = asyncHandler(async (req, res) => {
     const user = req.user;
-    console.log("user", user);
 
     const blogId = req.query.id;
     console.log("BLOG ID", blogId);
     const blog = await Blog.findById(blogId);
 
+    // increase views of blog
     blog.views = blog.views + 1;
     await blog.save({ validateBeforeSave: false })
 
@@ -181,13 +181,36 @@ const blogDetailPage = asyncHandler(async (req, res) => {
         throw new ApiError(404, 'Blog not found'); // Handle non-existent blog
     }
 
+    // getting comments
     const comments = await Comment.find({ blog: blogId })
         .sort({ createdAt: -1 })
         .limit(10)
         .populate("author", 'username')
 
-    res.render('pages/blogDetails.ejs', { blog ,comments, user});
+    res.render('pages/blogDetails.ejs', { blog, comments, user });
+})
+
+const addComment = asyncHandler(async (req, res) => {
+    // console.log(req)
+    const user = req.user;
+    const { content , blogId} = req.body;
+    // const blogId = req.query.id;
+    const userId = user._id;
+    console.log(userId, blogId, content)
+    const isEmpty = [userId, blogId, content].some(field => !field || field.toString().trim() === "");
+    if (isEmpty) {
+        // throw new ApiError(404, "all fields are required");
+        res.redirect("/blogs/blog?id=" + blogId);
+    }
+
+    const comment = await Comment.create({
+        author: userId,
+        content: content,
+        blog: blogId
+    })
+
+    res.redirect("/blogs/blog?id=" + blogId);
 })
 
 
-export { createBlog, getRandomTen, getPopular, getBlogDetails, homePage, blogDetailPage }
+export { createBlog, getRandomTen, getPopular, getBlogDetails, homePage, blogDetailPage, addComment, getHomePageData }

@@ -21,23 +21,17 @@ app.use(express.static("public")) // for images and ...
 
 app.use(cookieParser()) // for storing and reading safe cookies
 
-
-// Use EJS as the view engine
 app.set('view engine', 'ejs');
 
-// Other middleware and route handlers...
+
 
 import userRouter from "./src/routes/user.routes.js"
-// import homeRouter from "./src/routes/home.routes.js"
 import blogRouter from "./src/routes/blog.routes.js"
 
 app.use("/users", userRouter)
 
 app.use("/blogs", blogRouter)
 
-
-// front end routes
-// app.use("/", homeRouter)
 
 
 export default app;

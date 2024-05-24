@@ -75,7 +75,7 @@ const getHomePageData = async () => {
     return { randomBlogs, popularBlog };
 }
 
-
+// to be modified
 const createBlog = asyncHandler(async (req, res) => {
     /**
      * check if user logged in // done
@@ -135,58 +135,6 @@ const createBlog = asyncHandler(async (req, res) => {
 
 })
 
-const getRandomTen = asyncHandler(async (req, res) => {
-    /**
-     * get list of 10-15 blogs from the db
-     */
-
-    const blogs = await Blog.aggregate([
-        { $sample: { size: 10 } }
-    ])
-
-    // console.log(blogs)
-
-    if (!blogs) {
-        throw new ApiError(404, "Blogs not found ");
-    }
-
-    res.status(200)
-        .json(new ApiResponse(200, blogs, "Blog responses from db"))
-})
-
-const getPopular = asyncHandler(async (req, res) => {
-
-    const blogs = await Blog.find({})
-        .sort({ views: -1 })
-        .limit(1)
-
-    if (!blogs) {
-        throw new ApiError(404, "Blogs not found");
-    }
-
-    res.status(200)
-        .json(new ApiResponse(200, blogs, "Blog responses from db are here "));
-})
-
-// Function to retrieve blog details by ID
-const getBlogDetails = asyncHandler(async (req, res) => {
-    const blogId = req.query.id;
-    console.log(blogId);
-    const blog = await Blog.findById(blogId);
-
-    blog.views = blog.views + 1;
-    await blog.save({ validateBeforeSave: false })
-
-
-
-    if (!blog) {
-        throw new ApiError(404, 'Blog not found'); // Handle non-existent blog
-    }
-
-    res.status(200).json(new ApiResponse(200, blog, 'Blog detail response'));
-});
-
-
 const homePage = asyncHandler(async (req, res) => {
     var { randomBlogs, popularBlog } = await getHomePageData();
     // console.log(response);
@@ -242,14 +190,14 @@ const blogDetailPage = asyncHandler(async (req, res) => {
     var visited = false;
 
 
-    if (user) {
+    if (user) { // maintaining history
         const userId = user._id;
 
         hasVisitedBlog(userId, blogId)
             .then(visited => {
                 console.log(`User has visited the blog: ${visited}`);
                 if (visited == false) {
-                    // Add blog to history
+                    // Add blog to history if not visited
                     const history = new History({
                         user: userId,
                         blog: blogId,
@@ -320,4 +268,4 @@ const addComment = asyncHandler(async (req, res) => {
 })
 
 
-export { createBlog, getRandomTen, getPopular, getBlogDetails, homePage, blogDetailPage, addComment, getHomePageData }
+export { createBlog, homePage, blogDetailPage, addComment, getHomePageData }

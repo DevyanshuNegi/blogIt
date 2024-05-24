@@ -16,7 +16,10 @@
             <a href="/users/auth" class="btn btn-info position-absolute" style="right: 20px;">Login/SignUp</a>
 
             <% } else { %>
-              <a href="/logout" class="btn btn-info position-absolute" style="right: 20px;">Logout</a>
+              <form action="/users/logout" method="post" class="position-absolute" style="right: 20px; top:0px">
+                <button type="submit" class="btn btn-info">Logout</button>
+                <!-- <a href="/users/logout" class="btn btn-info position-absolute" style="right: 20px;">Logout</a> -->
+              </form>
               <% } %>
         </div>
         <hr>

@@ -8,9 +8,26 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ErrorSharp } from "@mui/icons-material";
 import mongoose from "mongoose";
 import { Comment } from "../models/comment.model.js";
+import { History } from "../models/history.model.js";
+import { localBlogHistory } from "../constants.js"; 
 
+// var blogIdList = [];
+// var localBlogHistory = [];
 
-var blogIdList = [];
+async function hasVisitedBlog(userId, blogId) {
+    try {
+        const history = await History.findOne({
+            user: userId,
+            blog: blogId,
+            action: 'viewed' // Filter for 'viewed' action
+        });
+
+        return !!history; // Return true if history exists, false otherwise
+    } catch (error) {
+        console.error(error);
+        return false; // Handle errors gracefully
+    }
+}
 
 const getHomePageData = async () => {
     const randomBlogs = await Blog.aggregate([
@@ -150,7 +167,7 @@ const homePage = asyncHandler(async (req, res) => {
     // console.log(response);
     var user = req.user;
 
-    blogIdList = randomBlogs.map(blog => { // adding id of blogs to list
+    const blogIdList = randomBlogs.map(blog => { // adding id of blogs to list
         return blog._id
     })
     for (let index = 0; index < randomBlogs.length; index++) {
@@ -170,8 +187,47 @@ const blogDetailPage = asyncHandler(async (req, res) => {
     const user = req.user;
 
     const blogId = req.query.id;
-    console.log("BLOG ID", blogId);
     const blog = await Blog.findById(blogId);
+    var visited = false;
+
+
+    if (user) {
+        const userId = user._id;
+
+        hasVisitedBlog(userId, blogId)
+            .then(visited => {
+                console.log(`User has visited the blog: ${visited}`);
+                if (visited == false) {
+                    // Add blog to history
+                    const history = new History({
+                        user: userId,
+                        blog: blogId,
+                        action: 'viewed'
+                    });
+                    history.save()
+                        .then(() => {
+                            console.log('History saved successfully');
+                        })
+                        .catch(error => {
+                            console.error('Error saving history:', error);
+                        });
+                }
+            })
+            .catch(error => {
+                console.error('Error checking history:', error);
+            });
+    }
+    else {
+        // maintain a local history
+        if (!(blogId in localBlogHistory)) {
+            localBlogHistory.unshift(blogId);
+            if (localBlogHistory.length > 5) {
+                localBlogHistory.pop();
+            }
+            console.log(localBlogHistory)
+        }
+    }
+
 
     // increase views of blog
     blog.views = blog.views + 1;
@@ -193,7 +249,7 @@ const blogDetailPage = asyncHandler(async (req, res) => {
 const addComment = asyncHandler(async (req, res) => {
     // console.log(req)
     const user = req.user;
-    const { content , blogId} = req.body;
+    const { content, blogId } = req.body;
     // const blogId = req.query.id;
     const userId = user._id;
     console.log(userId, blogId, content)

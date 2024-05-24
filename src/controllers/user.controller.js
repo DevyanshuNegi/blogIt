@@ -398,8 +398,35 @@ const authPage = asyncHandler(async (req, res) => {
     res.render("pages/auth.ejs", { errormsg })
 })
 
+const logoutUserPage = asyncHandler(async (req, res) => {
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $set: {
+                refreshToken: undefined
+            }
+        },
+        {
+            new: true // you will get new upadted value in return
+        }
+    )
+
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
+    console.log("** User logged out **")
+
+    return res
+        .status(200)
+        .clearCookie("accessToken", options)
+        .clearCookie("refreshToken", options)
+        .redirect("/users/home")
+})
+
 export {
     loginUser, registerUser, logoutUser, refreshAccessToken, isLogedIn,
-    changeCurrentPassword, authPage, loginUserPage, registerUserPage
+    changeCurrentPassword, authPage, loginUserPage, registerUserPage, logoutUserPage
 }
 // changing half of codebase

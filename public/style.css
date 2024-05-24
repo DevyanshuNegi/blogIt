@@ -222,7 +222,7 @@ i {
     /* Hide content that overflows */
     text-overflow: clip;
     /* Clip overflowing content */
-    width: 13ch;
+    width: 13.5ch;
     /* Adjust as needed (1ch = character width) */
 }
 

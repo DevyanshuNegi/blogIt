@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { loginUser, registerUser, logoutUser, refreshAccessToken, 
-    isLogedIn, authPage  , loginUserPage, registerUserPage} from "../controllers/user.controller.js";
+    isLogedIn, authPage  , loginUserPage, registerUserPage, logoutUserPage} from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { checkUserAuth } from "../middlewares/user.middleware.js";
@@ -22,10 +22,10 @@ router.route("/register").post(registerUserPage)
 
 
 // secured routes
-
-router.route("/logout").post(verifyJWT,// this mw will run first and you can add more middlewares , , then fun
-    // then the next function inside will run next fun.
-    logoutUser)
+router.route("/logout").post(verifyJWT, logoutUserPage)
+// router.route("/logout").post(verifyJWT,// this mw will run first and you can add more middlewares , , then fun
+//     // then the next function inside will run next fun.
+//     logoutUser)
 
 router.route("/refresh-token").post(refreshAccessToken)
 

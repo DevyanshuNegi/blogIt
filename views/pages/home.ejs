@@ -13,7 +13,7 @@
           <h3 class="home-our-stories d-inline">&emsp;<i class="bi bi-heart-fill"></i>&emsp; Our Stories</h3>
           <!-- <button class="btn btn-info position-absolute" style="right: 20px;">SingUp/Login</button> -->
           <% if (user==null) { %>
-            <a href="/auth" class="btn btn-info position-absolute" style="right: 20px;">Login/SignUp</a>
+            <a href="/users/auth" class="btn btn-info position-absolute" style="right: 20px;">Login/SignUp</a>
 
             <% } else { %>
               <a href="/logout" class="btn btn-info position-absolute" style="right: 20px;">Logout</a>
@@ -41,8 +41,8 @@
                       <p><i class="bi bi-activity"></i>
                         <%= blog.views %> views
                       </p>
-                      <p><i class="bi bi-clock"></i>
-                        <%= blog.createdAt %>
+                      <p class="d-flex"><i class="bi bi-clock"></i>
+                        <span class="format-date"><%= blog.createdAt %></span>
                       </p>
                     </div>
                   </div>

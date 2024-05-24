@@ -21,8 +21,8 @@
                             <p>
                                 <i class="bi bi-activity"></i> views: <%= blog.views %>
                             </p>
-                            <p>
-                                <i class="bi bi-clock"></i> published on: <%= blog.createdAt %>
+                            <p class="d-flex">
+                                <i class="bi bi-clock"></i> published on : <span class="format-date"><%= blog.createdAt %></span>
                             </p>
                         </div>
                     </div>
@@ -37,6 +37,7 @@
 
             <div class="p-5 blog-details-comments">
                 <h3>Comments</h3>
+                <a class="btn btn-primary" href="/blogs/auth">SignIn to add comment</a>
                 <hr>
 
                 <% comments.forEach(comment=> { %>
@@ -47,7 +48,7 @@
                                 @<%= comment.author.username %>
                             </h5>
                         </span>
-                        <span class="blog-details-comment-date">
+                        <span class="blog-details-comment-date format-date">
                             <%= comment.createdAt %>
                         </span>
                         <p>

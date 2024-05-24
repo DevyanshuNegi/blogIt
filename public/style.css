@@ -209,7 +209,24 @@ i{
     color: rgb(219, 219, 219);
 }
 
-.blog-details-comment-date{
+
+.format-date{
+    margin-left: 5px;
+display: inline-block;
+    /* Make the content flow inline */
+    width: max-content;
+    /* Allow content to shrink to fit its width */
+    white-space: nowrap;
+    /* Prevent wrapping to next line */
+    overflow: hidden;
+    /* Hide content that overflows */
+    text-overflow: clip;
+    /* Clip overflowing content */
+    max-width: 14ch;
+    /* Adjust as needed (1ch = character width) */
+}
+
+.blog-details-comment-date {
     color: rgb(83, 83, 83);
     font-weight: 400;
     margin-left: 60px;

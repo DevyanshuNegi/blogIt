@@ -5,6 +5,9 @@ import bcrypt from "bcrypt"
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 
+var errormsg = null;
+
+
 const generateAccessAndRefreshToken = (async (userId) => {
 
     try {
@@ -38,7 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
     fetch by user id 
     give response 
     */
-//    console.log(req)
+    //    console.log(req)
 
     const { username, fullName, password, email } = req.body;
     console.log(username, fullName, password, email);
@@ -92,15 +95,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
 const loginUser = asyncHandler(async (req, res) => {
-    /*
-    get info
-    check if nothing empty give error
-    find in the db
-    compare password give errror
-    generate access and refresh token
-    update refresh token in db
-    pass refresh and access token in cookies
-    */
 
     // console.log(req)
     const { username, email, password } = req.body;
@@ -254,7 +248,7 @@ const isLogedIn = asyncHandler(async (req, res) => {
     console.log("isLoggedIn", req);
     const user = req.user;
     // console.log(user)
-    if(user===null) {
+    if (user === null) {
         return res.status(200).json(new ApiResponse(200, null, "User not logged in"))
     }
     return res.status(200).json(new ApiResponse(200, user, "User logged in"))
@@ -271,24 +265,141 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
      */
 
     // console.log(req)
-    const {oldPassword, newPassword} = req.body;
+    const { oldPassword, newPassword } = req.body;
 
     const user = await User.findById(req.user?._id)
     const passCorrect = user.isPasswordCorrect(oldPassword);
 
-    if(!passCorrect) {
+    if (!passCorrect) {
         throw new ApiError(400, "invalid old password")
     }
 
     user.password = newPassword
-    await user.save({validateBeforeSave: false})
+    await user.save({ validateBeforeSave: false })
 
     return res
-    .status(200)
-    .json(new ApiResponse(200, {}, "Password changed Successfully"));
+        .status(200)
+        .json(new ApiResponse(200, {}, "Password changed Successfully"));
 
 })
 
-export { loginUser, registerUser, logoutUser, refreshAccessToken, isLogedIn,
-     changeCurrentPassword }
+const loginUserPage = asyncHandler(async (req, res) => {
+    // console.log(req)
+    const { username, email, password } = req.body;
+    console.log(username, email, password);
+
+    if (!username && !email) {
+        // throw new ApiError(404, "username or email is required");
+        errormsg = "username or email is required"
+        res.redirect("/users/auth")
+    }
+
+    if (!password) {
+        // throw new ApiError(422, "password is required");
+        errormsg = "password is required";
+        res.redirect("/users/auth")
+    }
+
+    // checking already existing
+
+    const user = await User.findOne({
+        $or: [
+            { username },
+            { email },
+        ],
+    });
+
+    if (user === null) {
+        // throw new ApiError(404, "User not found")
+        errormsg = "User not found";
+    }
+
+    const isCorrect = user.isPasswordCorrect(password)
+
+    if (!isCorrect) {
+        // throw new ApiError(402, "Password in not correct")
+        errormsg = "Password is not correct"
+    }
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user)
+
+    console.log("access and ref token ", accessToken, refreshToken) // woking fine till here
+
+    const loggedInUser = await User.findById(user._id) // you can update also without 
+        .select("-password -refreshToken")
+
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res
+        .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .redirect("/blogs/home")
+})
+
+const registerUserPage = asyncHandler(async (req, res) => {
+    const { username, fullName, password, email } = req.body;
+    console.log(username, fullName, password, email);
+
+    const isEmpty = [username, email, fullName, password].some(field => !field || field.trim() === "");
+
+    console.log(isEmpty);
+
+    if (isEmpty) {
+        // throw new ApiError(422, "All fields are required");
+        errormsg = "All fields are required";
+        res.redirect("/users/auth")
+    }
+
+    // checking already existing
+
+    const dbUser = await User.findOne({
+        $or: [
+            { username },
+            { email },
+        ],
+    });
+
+    if (dbUser !== null) {
+        // throw new ApiError(402, "User already existed")
+        errormsg = "User already existed"
+        res.redirect("/users/auth")
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const user = await User.create({
+        username: username.toLowerCase(),
+        fullName: fullName,
+        email: email,
+        password: hashedPassword
+    })
+
+    const checkingUser = await User.findById(user._id, {
+        password: 0, // Exclude password field
+        accessToken: 0, // Exclude accessToken field
+    });
+
+    if (checkingUser === null) {
+        // throw new ApiError(403, "error on upload")
+        errormsg = "not registered"
+        res.redirect("/users/auth")
+    }
+
+    return res
+        .status(200)
+        .redirect("/users/auth")
+})
+
+const authPage = asyncHandler(async (req, res) => {
+    res.render("pages/auth.ejs", { errormsg })
+})
+
+export {
+    loginUser, registerUser, logoutUser, refreshAccessToken, isLogedIn,
+    changeCurrentPassword, authPage, loginUserPage, registerUserPage
+}
 // changing half of codebase

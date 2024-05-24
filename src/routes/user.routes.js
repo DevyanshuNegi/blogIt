@@ -1,23 +1,24 @@
 import { Router } from "express";
-import { loginUser, registerUser, logoutUser, refreshAccessToken, isLogedIn  } from "../controllers/user.controller.js";
+import { loginUser, registerUser, logoutUser, refreshAccessToken, 
+    isLogedIn, authPage  , loginUserPage, registerUserPage} from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { checkUserAuth } from "../middlewares/user.middleware.js";
 
 const router = Router()
 
-router.route("/register").post(
+router.route("/api/register").post(
     registerUser
 )
 
-router.route("/login").post(loginUser)
+router.route("/api/login").post(loginUser)
 router.route("/checkUserLoggedIn").get(checkUserAuth, isLogedIn)
 
-// router.route("/register").post(registerUser) 
 
-// register method is called
-// this is ther route that will be added after 
-// http://localhost:8000/api/v1/users
+router.route("/auth").get(authPage)
+router.route("/login").post(loginUserPage)
+router.route("/register").post(registerUserPage)
+// router.route("/register").post(registerUser) 
 
 
 // secured routes

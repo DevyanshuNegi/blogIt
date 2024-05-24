@@ -7,6 +7,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ErrorSharp } from "@mui/icons-material";
 import mongoose from "mongoose";
+import { Comment } from "../models/comment.model.js";
 
 
 var blogIdList = [];
@@ -165,5 +166,28 @@ const homePage = asyncHandler(async (req, res) => {
     });
 })
 
+const blogDetailPage = asyncHandler(async (req, res) => {
+    const user = req.user;
+    console.log("user", user);
 
-export { createBlog, getRandomTen, getPopular, getBlogDetails , homePage}
+    const blogId = req.query.id;
+    console.log("BLOG ID", blogId);
+    const blog = await Blog.findById(blogId);
+
+    blog.views = blog.views + 1;
+    await blog.save({ validateBeforeSave: false })
+
+    if (!blog) {
+        throw new ApiError(404, 'Blog not found'); // Handle non-existent blog
+    }
+
+    const comments = await Comment.find({ blog: blogId })
+        .sort({ createdAt: -1 })
+        .limit(10)
+        .populate("author", 'username')
+
+    res.render('pages/blogDetails.ejs', { blog ,comments, user});
+})
+
+
+export { createBlog, getRandomTen, getPopular, getBlogDetails, homePage, blogDetailPage }

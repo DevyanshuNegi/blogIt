@@ -19,7 +19,7 @@
         <!-- Pills content -->
         <div class="tab-content">
             <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-                <form action="/login" method="post">
+                <form action="/users/login" method="post">
                     <div class="text-center mb-3">
                         <p>Sign in with: (in progress)</p>
                         <button type="button" data-mdb-button-init data-mdb-ripple-init
@@ -75,12 +75,12 @@
 
                     <!-- Register buttons -->
                     <div class="text-center">
-                        <p>Not a member? <a href="#!">Register</a></p>
+                        <p>Not a member? <a href="#pills-register">Register</a></p>
                     </div>
                 </form>
             </div>
             <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-                <form method="post" action="/signin">
+                <form method="post" action="/users/register">
                     <div class="text-center mb-3">
                         <p>Sign up with: (In Progress)</p>
                         <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
@@ -100,7 +100,7 @@
 
                     <!-- Name input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="text" id="registerName" class="form-control"  name="FullName"/>
+                        <input type="text" id="registerName" class="form-control"  name="fullName"/>
                         <label class="form-label" for="registerName">Full Name</label>
                     </div>
 

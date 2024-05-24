@@ -1,18 +1,43 @@
-import { User } from "../models/user.model.js"
 import { Blog } from "../models/blog.model.js";
 import ApiError from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js"
-import bcrypt from "bcrypt"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { ErrorSharp } from "@mui/icons-material";
-import mongoose from "mongoose";
 import { Comment } from "../models/comment.model.js";
 import { History } from "../models/history.model.js";
-import { localBlogHistory } from "../constants.js"; 
+// import { localBlogHistory } from "../constants.js"; 
 
 // var blogIdList = [];
-// var localBlogHistory = [];
+var localBlogHistory = [];
+
+async function getMostRecentVisitedBlogs(userId) {
+    try {
+        // const blogs = await History.find({
+        //     // user: mongoose.Types.ObjectId(userId),
+        //     user: userId,
+        //     action: 'viewed' // Filter for 'viewed' action
+        // })
+        //     .sort({ createdAt: -1 }) // Sort by creation date (descending)
+        //     .limit(3); // Limit to 3 documents
+            
+        const blogs = await History.find({
+            user: userId,
+            action: 'viewed' // Filter for 'viewed' action
+        })
+            .sort({ createdAt: -1 }) // Sort by creation date (descending)
+            .limit(3)
+            .populate({
+                path: Blog, // Field name referencing the blog
+            }); // Populate with specific fields
+
+        console.log("inside function ", blogs);
+        // return blogs.map(history => history.blog); // Extract blog IDs
+        return blogs;
+    } catch (error) {
+        console.error(error);
+        return []; // Handle errors gracefully (return empty array)
+    }
+}
 
 async function hasVisitedBlog(userId, blogId) {
     try {
@@ -175,11 +200,37 @@ const homePage = asyncHandler(async (req, res) => {
         const created = randomBlogs[index].createdAt.toString().split('T');
         randomBlogs[index].createdAt = created[0];
     }
+    var historyBlogs = [];
+
+    if (user) {
+        // await getMostRecentVisitedBlogs(user._id)
+        //     .then(blogs => {
+        //         // console.log('Most recent visited blogs:', blogs);
+        //         historyBlogs = blogs;
+        //     })
+        //     .catch(error => {
+        //         console.error('Error fetching blogs:', error);
+        //     });
+        historyBlogs = await Blog.aggregate([
+            { $sample: { size: 3 } }
+        ])
+    } else {
+        // try {
+        //     historyBlogs = await History.find({
+        //         _id: { $in: localBlogHistory.map(id => mongoose.Types.ObjectId(id)) }
+        //     });
+        // } catch (error) {
+        //     // res.redirect("/blogs/home")
+        //     console.log("error", error.message)
+        // }
+    }
+    console.log("history Blogs", historyBlogs)
 
     res.render("pages/home.ejs", {
         randomBlogs,
         popularBlog,
-        user
+        user,
+        historyBlogs
     });
 })
 
@@ -221,7 +272,7 @@ const blogDetailPage = asyncHandler(async (req, res) => {
         // maintain a local history
         if (!(blogId in localBlogHistory)) {
             localBlogHistory.unshift(blogId);
-            if (localBlogHistory.length > 5) {
+            if (localBlogHistory.length > 3) {
                 localBlogHistory.pop();
             }
             console.log(localBlogHistory)

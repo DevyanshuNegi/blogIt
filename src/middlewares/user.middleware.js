@@ -35,6 +35,8 @@ export const checkUserAuth = asyncHandler(async (req, res,
 
     } catch (error) {
         // console.log("error on auth middleware")
-        throw new ApiError(401, error?.message || "Invalid access token")
+        // throw new ApiError(401, error?.message || "Invalid access token")
+        req.user = null;
+        next();
     }
 })

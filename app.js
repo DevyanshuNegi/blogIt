@@ -28,16 +28,16 @@ app.set('view engine', 'ejs');
 // Other middleware and route handlers...
 
 import userRouter from "./src/routes/user.routes.js"
-import homeRouter from "./src/routes/home.routes.js"
+// import homeRouter from "./src/routes/home.routes.js"
 import blogRouter from "./src/routes/blog.routes.js"
 
-app.use("/api/v1/users", userRouter)
+app.use("/users", userRouter)
 
-app.use("/api/v1/blogs", blogRouter)
+app.use("/blogs", blogRouter)
 
 
 // front end routes
-app.use("/", homeRouter)
+// app.use("/", homeRouter)
 
 
 export default app;

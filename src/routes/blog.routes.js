@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createBlog, getBlogDetails, getPopular, getRandomTen } from "../controllers/blog.controller.js";
+import { createBlog, getBlogDetails, getPopular, getRandomTen, homePage } from "../controllers/blog.controller.js";
 import { upload } from "../middlewares/multer.middleware.js"
 import multer from "multer";
 const router = Router();
@@ -13,9 +13,6 @@ router.route("/getBlogDetails").get(getBlogDetails);
 
 router.route("/getBlogComments").get(getBlogComments)
 
-// secured routes
-// here firstly middleware will check if user is logged in
-
 router.route("/create").post(verifyJWT,
     upload.single(
         'thumbnail'
@@ -25,5 +22,7 @@ router.route("/create").post(verifyJWT,
 // add comment to a blog
 router.route("/addComment").post(verifyJWT, addComment);
 
+
+router.route("/home").get(checkUserAuth, homePage);
 
 export default router;

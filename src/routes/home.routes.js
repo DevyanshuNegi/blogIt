@@ -23,10 +23,10 @@ router.route("/home").get(
                 popularBlogResponse,
                 isLoggedIn
             ] = await Promise.all([
-                axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/blogs/randomBlogs"),
-                // axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/blogs/recent"),
-                axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/blogs/getPopular"),
-                axios.get("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/users/checkUserLoggedIn",req.cookies, {
+                axios.get("http://localhost:" + (process.env.PORT || 8000) + "/blogs/randomBlogs"),
+                // axios.get("http://localhost:" + (process.env.PORT || 8000) + "/blogs/recent"),
+                axios.get("http://localhost:" + (process.env.PORT || 8000) + "/blogs/getPopular"),
+                axios.get("http://localhost:" + (process.env.PORT || 8000) + "/users/checkUserLoggedIn",req.cookies, {
                     withCredentials: true
                 })
             ]);
@@ -71,9 +71,9 @@ router.route('/blog').get(async (req, res) => {
 
     try {
         // const blog = await findBlogById(blogId); // Replace with your logic to find blog by ID
-        const blogDetails = await axios.get("http://localhost:" + (process.env.PORT || 8000) + `/api/v1/blogs/getBlogDetails?id=${blogId}`);
+        const blogDetails = await axios.get("http://localhost:" + (process.env.PORT || 8000) + `/blogs/getBlogDetails?id=${blogId}`);
 
-        const mostRecentComments = await axios.get("http://localhost:" + (process.env.PORT || 8000) + `/api/v1/blogs/getBlogComments?id=${blogId}`)
+        const mostRecentComments = await axios.get("http://localhost:" + (process.env.PORT || 8000) + `/blogs/getBlogComments?id=${blogId}`)
 
 
         const comments = mostRecentComments.data.data;
@@ -105,7 +105,7 @@ router.route('/login').post(async (req, res) => {
     var loginResponse = undefined;
 
     try {
-        loginResponse = await axios.post("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/users/login", req.body)
+        loginResponse = await axios.post("http://localhost:" + (process.env.PORT || 8000) + "/users/login", req.body)
 
         statuscode = loginResponse.status;
         errormsg = loginResponse.data.message;
@@ -142,7 +142,7 @@ router.route('/signin').post(async (req, res) => {
     // formData.append("username", req.body.username);
     // formData.append("fullName", req.body.fullName);
     try {
-        const register = await axios.post("http://localhost:" + (process.env.PORT || 8000) + "/api/v1/users/register", req.body)
+        const register = await axios.post("http://localhost:" + (process.env.PORT || 8000) + "/users/register", req.body)
         console.log("response ", register)
 
     } catch (error) {

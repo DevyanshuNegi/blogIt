@@ -9,6 +9,30 @@ import { ErrorSharp } from "@mui/icons-material";
 import mongoose from "mongoose";
 
 
+var blogIdList = [];
+
+const getHomePageData = async () => {
+    const randomBlogs = await Blog.aggregate([
+        { $sample: { size: 10 } }
+    ])
+
+    if (!randomBlogs) {
+        throw new ApiError(404, "Blogs not found ");
+    }
+
+    const popularBlog = await Blog.find({})
+        .sort({ views: -1 })
+        .limit(1)
+
+    if (!popularBlog) {
+        throw new ApiError(404, "Blogs not found");
+    }
+    // console.log(randomBlogs, popularBlog);
+
+    return { randomBlogs, popularBlog };
+}
+
+
 const createBlog = asyncHandler(async (req, res) => {
     /**
      * check if user logged in // done
@@ -119,4 +143,27 @@ const getBlogDetails = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, blog, 'Blog detail response'));
 });
 
-export { createBlog, getRandomTen, getPopular, getBlogDetails }
+
+const homePage = asyncHandler(async (req, res) => {
+    var {randomBlogs, popularBlog} = await getHomePageData();
+    // console.log(response);
+    var user = null;
+    
+    blogIdList = randomBlogs.map(blog => { // adding id of blogs to list
+        return blog._id
+    })
+    for (let index = 0; index < randomBlogs.length; index++) {
+        const element = randomBlogs[index];
+        const created = randomBlogs[index].createdAt.toString().split('T');
+        randomBlogs[index].createdAt = created[0];
+    }
+
+    res.render("pages/home.ejs", {
+        randomBlogs,
+        popularBlog,
+        user
+    });
+})
+
+
+export { createBlog, getRandomTen, getPopular, getBlogDetails , homePage}

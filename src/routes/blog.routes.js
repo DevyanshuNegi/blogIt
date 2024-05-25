@@ -16,7 +16,7 @@ router.route("/create").post(verifyJWT,
 
 
 
-router.route("/home").get(checkUserAuth, homePage);
+router.route("/").get(checkUserAuth, homePage);
 router.route("/blog").get(checkUserAuth, blogDetailPage);
 router.route("/addComment").post(checkUserAuth, addComment);
 

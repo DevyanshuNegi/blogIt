@@ -30,7 +30,7 @@ import blogRouter from "./src/routes/blog.routes.js"
 
 app.use("/users", userRouter)
 
-app.use("/blogs", blogRouter)
+app.use("/", blogRouter)
 
 
 

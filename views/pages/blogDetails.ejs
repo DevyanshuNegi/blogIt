@@ -47,7 +47,7 @@
 
                         <!-- Adding comments -->
                         <div class="card-body">
-                            <form id="comment-form" method="post" action="/blogs/addComment">
+                            <form id="comment-form" method="post" action="/addComment">
                                 <div class="mb-3">
                                     <!-- <label for="comment-text" class="form-label">Comment</label> -->
                                     <input type="text" name="blogId" value="<%= blog._id %>" class="d-none">
@@ -62,7 +62,7 @@
 
                     <% } else { %>
 
-                        <a class="btn btn-primary" href="/blogs/auth">SignIn to add comment</a>
+                        <a class="btn btn-primary" href="/auth">SignIn to add comment</a>
                         <% } %>
                             <hr>
 

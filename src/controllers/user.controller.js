@@ -126,7 +126,7 @@ const loginUser = asyncHandler(async (req, res) => {
         .status(200)
         .cookie("accessToken", accessToken, options)
         .cookie("refreshToken", refreshToken, options)
-        .redirect("/blogs/home")
+        .redirect("/")
 })
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -211,7 +211,7 @@ const logoutUser = asyncHandler(async (req, res) => {
         .status(200)
         .clearCookie("accessToken", options)
         .clearCookie("refreshToken", options)
-        .redirect("/blogs/home")
+        .redirect("/")
 })
 
 export {

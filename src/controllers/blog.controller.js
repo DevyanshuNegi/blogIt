@@ -168,7 +168,7 @@ const homePage = asyncHandler(async (req, res) => {
         //         _id: { $in: localBlogHistory.map(id => mongoose.Types.ObjectId(id)) }
         //     });
         // } catch (error) {
-        //     // res.redirect("/blogs/home")
+        //     // res.redirect("/")
         //     console.log("error", error.message)
         // }
     }
@@ -255,7 +255,7 @@ const addComment = asyncHandler(async (req, res) => {
     const isEmpty = [userId, blogId, content].some(field => !field || field.toString().trim() === "");
     if (isEmpty) {
         // throw new ApiError(404, "all fields are required");
-        res.redirect("/blogs/blog?id=" + blogId);
+        res.redirect("/blog?id=" + blogId);
     }
 
     const comment = await Comment.create({
@@ -264,7 +264,7 @@ const addComment = asyncHandler(async (req, res) => {
         blog: blogId
     })
 
-    res.redirect("/blogs/blog?id=" + blogId);
+    res.redirect("/blog?id=" + blogId);
 })
 
 

@@ -1,6 +1,6 @@
 <%- include("../partials/head.ejs") %>
 
-  <%- include("../partials/sidebar.ejs") %>
+  <%- include("../partials/sidebar.ejs", {user:user}) %>
 
     <!-- content after sidebar -->
     <div class="row">
@@ -121,7 +121,11 @@
 
 
           </div>
-
+        <!-- // enum: [
+        // "Lifestyle", "Technology", "Business",
+        // "Entertainment", "Science ", "Parenting",
+        // "Social Issues", "Personal Development", "Finance",
+        // ], -->
           <div class="">
             <h4 class="fst-italic">Categories</h4>
             <ol class="categories-list d-flex flex-wrap list-unstyled mb-0">
@@ -133,10 +137,6 @@
               <li><a href="#">Educational</a></li>
               <li><a href="#">History</a></li>
               <li><a href="#">Space</a></li>
-              <li><a href="#">July 2020</a></li>
-              <li><a href="#">June 2020</a></li>
-              <li><a href="#">May 2020</a></li>
-              <li><a href="#">April 2020</a></li>
             </ol>
           </div>
 

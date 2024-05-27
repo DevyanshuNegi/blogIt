@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { blogDetailPage, createBlog, homePage , addComment} from "../controllers/blog.controller.js";
+import { blogDetailPage, createBlog, homePage , addComment, createBlogPage} from "../controllers/blog.controller.js";
 import { upload } from "../middlewares/multer.middleware.js"
 import multer from "multer";
 const router = Router();
@@ -19,5 +19,6 @@ router.route("/create").post(verifyJWT,
 router.route("/").get(checkUserAuth, homePage);
 router.route("/blog").get(checkUserAuth, blogDetailPage);
 router.route("/addComment").post(checkUserAuth, addComment);
+router.route("/addBlog").get(checkUserAuth, createBlogPage);
 
 export default router;

@@ -75,6 +75,12 @@ const getHomePageData = async () => {
     return { randomBlogs, popularBlog };
 }
 
+const createBlogPage = asyncHandler(async (req, res) => {
+    var user = req.user;
+    console.log(user)
+    res.render("pages/createBlog.ejs", { user });
+})
+
 // to be modified
 const createBlog = asyncHandler(async (req, res) => {
     /**
@@ -268,4 +274,4 @@ const addComment = asyncHandler(async (req, res) => {
 })
 
 
-export { createBlog, homePage, blogDetailPage, addComment, getHomePageData }
+export { createBlog, homePage, blogDetailPage, addComment, getHomePageData, createBlogPage }

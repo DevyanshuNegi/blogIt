@@ -131,14 +131,10 @@
           <div class="">
             <h4 class="fst-italic">Categories</h4>
             <ol class="categories-list d-flex flex-wrap list-unstyled mb-0">
-              <li><a href="#">Travel</a></li>
-              <li><a href="#">Science</a></li>
-              <li><a href="#">Technology</a></li>
-              <li><a href="#">Politics</a></li>
-              <li><a href="#">Entertainment</a></li>
-              <li><a href="#">Educational</a></li>
-              <li><a href="#">History</a></li>
-              <li><a href="#">Space</a></li>
+              <% for( let index = 0; index < categories.length; index++ ) { %>
+              <li><a href=<%= cathref[index] %>><%= categories[index] %></a></li>
+              <% } %>
+              <li><a href="/?category=category">Travel</a></li>
             </ol>
           </div>
 

@@ -101,6 +101,7 @@ const loginUser = asyncHandler(async (req, res) => {
     if (user === null) {
         // throw new ApiError(404, "User not found")
         errormsg = "User not found";
+        res.redirect("/users/auth")
     }
 
     const isCorrect = user.isPasswordCorrect(password)

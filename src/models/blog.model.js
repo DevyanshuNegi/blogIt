@@ -45,7 +45,7 @@ const blogSchema = new mongoose.Schema({
     // }],
     category: {
         type: [String],
-        // enum: [
+        // [
         //     "Lifestyle", "Technology", "Business", 
         //     "Entertainment", "Science ", "Parenting", 
         //     "Social Issues", "Personal Development", "Finance",

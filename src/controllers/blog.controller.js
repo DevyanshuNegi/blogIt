@@ -54,10 +54,16 @@ async function hasVisitedBlog(userId, blogId) {
     }
 }
 
-const getHomePageData = async () => {
-    const randomBlogs = await Blog.aggregate([
-        { $sample: { size: 10 } }
-    ])
+const getHomePageData = async (cat = null) => {
+    console.log("inside function ", cat)
+    var randomBlogs = [];
+    if (cat ==null) {
+        randomBlogs = await Blog.aggregate([
+            { $sample: { size: 10 } }
+        ])
+    } else {
+        randomBlogs = await Blog.find({ category: { $in: [cat] } }).limit(10)
+    }
 
     if (!randomBlogs) {
         throw new ApiError(404, "Blogs not found ");
@@ -82,7 +88,7 @@ const createBlogPage = asyncHandler(async (req, res) => {
 
 const createBlog = asyncHandler(async (req, res) => {
     const user = req.user;
-    const { title, content, categories} = req.body;
+    const { title, content, categories } = req.body;
     const localFilePath = req.file.path
     const isPublished = true;
     // console.log(title, content, categories, localFilePath);
@@ -113,18 +119,30 @@ const createBlog = asyncHandler(async (req, res) => {
     )
     console.log(blog)
 
-    res.redirect("/blog" +"?id="+blog._id)
+    res.redirect("/blog" + "?id=" + blog._id)
 
 })
 
 const homePage = asyncHandler(async (req, res) => {
-    var { randomBlogs, popularBlog } = await getHomePageData();
+    const category = req.query.category;
+    console.log(category)
+    const categories = [
+        "Lifestyle", "Technology", "Business",
+        "Entertainment", "Science", "Parenting",
+        "Social Issues", "Personal Development", "Finance",
+    ]
+    var cathref = categories.map(cat=> {
+        return ("/?category="+cat)
+    })
+    
+    var { randomBlogs, popularBlog } = await getHomePageData(category);
     // console.log(response);
     var user = req.user;
 
     const blogIdList = randomBlogs.map(blog => { // adding id of blogs to list
         return blog._id
     })
+
     for (let index = 0; index < randomBlogs.length; index++) {
         const element = randomBlogs[index];
         const created = randomBlogs[index].createdAt.toString().split('T');
@@ -160,7 +178,9 @@ const homePage = asyncHandler(async (req, res) => {
         randomBlogs,
         popularBlog,
         user,
-        historyBlogs
+        historyBlogs,
+        cathref,
+        categories
     });
 })
 

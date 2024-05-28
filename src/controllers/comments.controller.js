@@ -18,7 +18,7 @@ const addComment = asyncHandler(async (req, res)=> {
     const blogId = query?.id;
     const content = query?.content;
 
-    console.log(userId, blogId, content)
+    // console.log(userId, blogId, content)
 
     // check if any empty
     const isEmpty = [userId, blogId, content].some(field => !field || field.toString().trim() === "");

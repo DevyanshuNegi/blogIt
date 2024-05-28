@@ -19,7 +19,7 @@ async function getMostRecentVisitedBlogs(userId) {
         // })
         //     .sort({ createdAt: -1 }) // Sort by creation date (descending)
         //     .limit(3); // Limit to 3 documents
-            
+
         const blogs = await History.find({
             user: userId,
             action: 'viewed' // Filter for 'viewed' action
@@ -77,43 +77,24 @@ const getHomePageData = async () => {
 
 const createBlogPage = asyncHandler(async (req, res) => {
     var user = req.user;
-    console.log(user)
     res.render("pages/createBlog.ejs", { user });
 })
 
-// to be modified
 const createBlog = asyncHandler(async (req, res) => {
-    /**
-     * check if user logged in // done
-     * get user details
-     * get the details from user: 
-     *      title, content, category, description, thumbnail
-     * check if empty and give error
-     * create new blog and save
-     * get the blog from db to confirm and give error
-     */
-
     const user = req.user;
-
-    const { title, content, category, description, isPublished } = req.body;
-
-    console.log(title, content, category, description, isPublished);
-
-    var newcategory = category; // to convier string to list
-    if (typeof (category) == "string") {
-        newcategory = category.split(", ");
-    }
-
+    const { title, content, categories} = req.body;
     const localFilePath = req.file.path
+    const isPublished = true;
+    // console.log(title, content, categories, localFilePath);
 
     const isEmpty = [title, content, localFilePath].some(field => !field || field.trim() === "");
     if (isEmpty) {
-        throw new ApiError(404, "title content and thumbnail is required");
+        return res.redirect("/addBlog")
     }
 
     const thumbnail = await uploadOnCloudinary(localFilePath)
 
-    /**remove this code */
+    // remove this code
     var max = 700
     var min = 70
     const views = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -123,21 +104,16 @@ const createBlog = asyncHandler(async (req, res) => {
             title: title,
             content: content,
             author: user._id,
-            category: newcategory,
-            description: description,
+            category: categories,
+            // description: description,
             thumbnail: thumbnail.url,
             isPublished: isPublished,
-            views: views /** remove this code */
+            views: views // remove this code
         }
     )
+    console.log(blog)
 
-    // console.log(blog)
-
-    return res
-        .status(200)
-        .json(
-            new ApiResponse(201, blog, "Blog created successfully!!!")
-        )
+    res.redirect("/blog" +"?id="+blog._id)
 
 })
 
@@ -257,7 +233,7 @@ const addComment = asyncHandler(async (req, res) => {
     const { content, blogId } = req.body;
     // const blogId = req.query.id;
     const userId = user._id;
-    console.log(userId, blogId, content)
+    // console.log(userId, blogId, content)
     const isEmpty = [userId, blogId, content].some(field => !field || field.toString().trim() === "");
     if (isEmpty) {
         // throw new ApiError(404, "all fields are required");

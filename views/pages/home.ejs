@@ -3,9 +3,11 @@
   <%- include("../partials/sidebar.ejs", {user:user}) %>
 
     <!-- content after sidebar -->
+    <div class="main-content-parent">
+
     <div class="row">
 
-      <div class="home-center-content col-md-9 col-sm-12 pt-4">
+      <div class="col-md-9 col-sm-12 pt-4">
         <!-- Center content must be here -->
 
         <div class="position-relative">
@@ -143,5 +145,7 @@
         </div>
 
       </div>
+    </div>
+
 
       <%- include("../partials/foot.ejs") %>

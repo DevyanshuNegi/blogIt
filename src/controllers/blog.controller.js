@@ -5,6 +5,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Comment } from "../models/comment.model.js";
 import { History } from "../models/history.model.js";
+import mongoose from "mongoose";
 // import { localBlogHistory } from "../constants.js"; 
 
 // var blogIdList = [];
@@ -151,26 +152,30 @@ const homePage = asyncHandler(async (req, res) => {
     var historyBlogs = [];
 
     if (user) {
-        // await getMostRecentVisitedBlogs(user._id)
-        //     .then(blogs => {
-        //         // console.log('Most recent visited blogs:', blogs);
-        //         historyBlogs = blogs;
-        //     })
-        //     .catch(error => {
-        //         console.error('Error fetching blogs:', error);
-        //     });
-        historyBlogs = await Blog.aggregate([
-            { $sample: { size: 3 } }
+
+        const response = await History.aggregate([
+            { $sort: { createdAt: -1 } },
+            { $limit: 3 },
+            { $match: { action: "viewed", user: new mongoose.Types.ObjectId('66408900232f98ba581b0202') } },
+            {
+                $lookup: {
+                    from: "blogs",
+                    localField: "blog",
+                    foreignField: "_id",
+                    as: "blog_details",
+                },
+            },
+            {
+                $addFields: {
+                    blog_details: { $arrayElemAt: ["$blog_details", 0] }, // Get only the first element from blog_details
+                },
+            },
         ])
+
+        historyBlogs = response.map(history => history.blog_details);
+       
     } else {
-        // try {
-        //     historyBlogs = await History.find({
-        //         _id: { $in: localBlogHistory.map(id => mongoose.Types.ObjectId(id)) }
-        //     });
-        // } catch (error) {
-        //     // res.redirect("/")
-        //     console.log("error", error.message)
-        // }
+        // TODO: maintain a local history
     }
     console.log("history Blogs", historyBlogs)
 
@@ -195,27 +200,40 @@ const blogDetailPage = asyncHandler(async (req, res) => {
     if (user) { // maintaining history
         const userId = user._id;
 
-        hasVisitedBlog(userId, blogId)
-            .then(visited => {
-                console.log(`User has visited the blog: ${visited}`);
-                if (visited == false) {
-                    // Add blog to history if not visited
-                    const history = new History({
-                        user: userId,
-                        blog: blogId,
-                        action: 'viewed'
-                    });
-                    history.save()
-                        .then(() => {
-                            console.log('History saved successfully');
-                        })
-                        .catch(error => {
-                            console.error('Error saving history:', error);
-                        });
-                }
+        // hasVisitedBlog(userId, blogId)
+        //     .then(visited => {
+        //         console.log(`User has visited the blog: ${visited}`);
+        //         if (visited == false) {
+        //             // Add blog to history if not visited
+        //             const history = new History({
+        //                 user: userId,
+        //                 blog: blogId,
+        //                 action: 'viewed'
+        //             });
+        //             history.save()
+        //                 .then(() => {
+        //                     console.log('History saved successfully');
+        //                 })
+        //                 .catch(error => {
+        //                     console.error('Error saving history:', error);
+        //                 });
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.error('Error checking history:', error);
+        //     });
+
+        const history = new History({
+            user: userId,
+            blog: blogId,
+            action: 'viewed'
+        });
+        history.save()
+            .then(() => {
+                console.log('History saved successfully');
             })
             .catch(error => {
-                console.error('Error checking history:', error);
+                console.error('Error saving history:', error);
             });
     }
     else {

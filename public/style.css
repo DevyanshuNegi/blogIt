@@ -106,7 +106,9 @@ hr.h-color {
 }
 
 .popular-thumbnail {
+    /* Does this change something */
     height: 200px;
+    /* height: 15px; */
 }
 
 .parent-div {
@@ -179,7 +181,7 @@ hr.h-color {
 
 .popular-image-card-div {
     background-color: rgba(0, 0, 0, 0.4) !important;
-    height: 300px;
+    height: 200px;
 }
 
 .home-our-stories {

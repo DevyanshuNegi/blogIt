@@ -56,7 +56,7 @@ async function hasVisitedBlog(userId, blogId) {
 }
 
 const getHomePageData = async (cat = null) => {
-    console.log("inside function ", cat)
+    console.log("inside function category = ", cat)
     var randomBlogs = [];
     if (cat ==null) {
         randomBlogs = await Blog.aggregate([
@@ -126,7 +126,6 @@ const createBlog = asyncHandler(async (req, res) => {
 
 const homePage = asyncHandler(async (req, res) => {
     const category = req.query.category;
-    console.log(category)
     const categories = [
         "Lifestyle", "Technology", "Business",
         "Entertainment", "Science", "Parenting",
@@ -177,8 +176,7 @@ const homePage = asyncHandler(async (req, res) => {
     } else {
         // TODO: maintain a local history
     }
-    console.log("history Blogs", historyBlogs)
-
+    console.log("history blogs" , historyBlogs)
     res.render("pages/home.ejs", {
         randomBlogs,
         popularBlog,
@@ -287,5 +285,28 @@ const addComment = asyncHandler(async (req, res) => {
     res.redirect("/blog?id=" + blogId);
 })
 
+const blogSearch = (async(req, res) => {
+    const searchTerm = req.query.searchTerm?.trim().toLowerCase(); // Sanitize and lowercase search term
+    console.log("searchTerm", searchTerm);
+    if (!searchTerm) {
+        return res.status(400).json({ message: 'Please provide a search term' });
+    }
 
-export { createBlog, homePage, blogDetailPage, addComment, getHomePageData, createBlogPage }
+    try {
+        // const results = await Blog.find({
+        //     $text: { $search: searchTerm }, // Perform text search using Mongoose text search
+        // }).limit(8)
+        // .sort({ _id: -1 })
+        // ; // Limit to 10 results and sort by latest
+
+        const results = await Blog.find({ title: { $regex: searchTerm, $options: "i" } }).exec();
+        console.log(results);
+
+        res.json(results);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching search results' });
+    }
+});
+
+export { createBlog, homePage, blogDetailPage, addComment, getHomePageData, createBlogPage, blogSearch}

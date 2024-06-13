@@ -51,8 +51,9 @@ const blogSchema = new mongoose.Schema({
         //     "Social Issues", "Personal Development", "Finance",
         // ],
         default: []
-    }
-    
+    },
+    // titleContentTextIndex: { type: String, index: true, text: true }, 
+    // not needed as we are using title index only
 
 }, { timestamps: true })
 

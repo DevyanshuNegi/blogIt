@@ -12,15 +12,32 @@ for (let index = 0; index < blogs.length; index++) {
 
 const searchInput = document.getElementById('searchTerm');
 const searchResults = document.getElementById('searchResults');
-let searchBox = document.getElementById('searchTerm');
+// let searchBox = document.getElementById('searchTerm');
+let searchBox = document.getElementById('search-and-results');
 // let searchResults = document.getElementById('searchResults');
 
 // to remove search results when clicked outside
 searchBox.addEventListener('blur', function () {
-    updateSearchResults("remove");
+        let target = event.target;
+        while (target != null) {
+            if (target == searchResults) {
+                return;
+            }
+            target = target.parentElement;
+        }
+        // updateSearchResults("remove");
+        updateSearchResults("remove");
 });
 
 document.addEventListener('click', function (event) {
+    let target = event.target;
+    while (target != null) {
+        if (target == searchResults) {
+            return;
+        }
+        target = target.parentElement;
+    }
+    // updateSearchResults("remove");
     updateSearchResults("remove");
 });
 
@@ -86,3 +103,10 @@ function updateSearchResults(results) {
     }
     searchResults.innerHTML = resultsHTML;
 }
+
+const menuButton = document.getElementById('menu-button');
+const sidebar = document.getElementById('side_nav');
+
+menuButton.addEventListener('click', function () {
+    sidebar.classList.toggle('active');
+});

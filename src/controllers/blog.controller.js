@@ -56,7 +56,7 @@ async function hasVisitedBlog(userId, blogId) {
 }
 
 const getHomePageData = async (cat = null) => {
-    console.log("inside function category = ", cat)
+    // console.log("inside function category = ", cat)
     var randomBlogs = [];
     if (cat ==null) {
         randomBlogs = await Blog.aggregate([
@@ -118,7 +118,7 @@ const createBlog = asyncHandler(async (req, res) => {
             views: views // remove this code
         }
     )
-    console.log(blog)
+    // console.log(blog)
 
     res.redirect("/blog" + "?id=" + blog._id)
 
@@ -176,7 +176,7 @@ const homePage = asyncHandler(async (req, res) => {
     } else {
         // TODO: maintain a local history
     }
-    console.log("history blogs" , historyBlogs)
+    // console.log("history blogs" , historyBlogs)
     res.render("pages/home.ejs", {
         randomBlogs,
         popularBlog,
@@ -235,14 +235,15 @@ const blogDetailPage = asyncHandler(async (req, res) => {
             });
     }
     else {
+        // TODO: maintain a local history
         // maintain a local history
-        if (!(blogId in localBlogHistory)) {
-            localBlogHistory.unshift(blogId);
-            if (localBlogHistory.length > 3) {
-                localBlogHistory.pop();
-            }
-            console.log(localBlogHistory)
-        }
+        // if (!(blogId in localBlogHistory)) {
+        //     localBlogHistory.unshift(blogId);
+        //     if (localBlogHistory.length > 3) {
+        //         localBlogHistory.pop();
+        //     }
+        //     console.log(localBlogHistory)
+        // }
     }
 
 
@@ -300,7 +301,7 @@ const blogSearch = (async(req, res) => {
         // ; // Limit to 10 results and sort by latest
 
         const results = await Blog.find({ title: { $regex: searchTerm, $options: "i" } }).exec();
-        console.log(results);
+        // console.log(results);
 
         res.json(results);
     } catch (error) {

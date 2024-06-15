@@ -287,3 +287,16 @@ body{
     text-decoration: none;
     color: #fff;
 }
+
+
+.bi-list{
+    display:none;
+}
+@media(max-width: 767px) {
+    .bi-heart-fill{
+        display:none;
+    }
+    .bi-list{
+        display:inline;
+    }
+}

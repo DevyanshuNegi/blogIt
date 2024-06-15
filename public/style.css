@@ -249,7 +249,7 @@ i {
 
 body{
     /* overflow: hidden */
-    overflow-x: hidden;
+    overflow-x:visible;
 }
 
 .search-and-results{
@@ -287,16 +287,21 @@ body{
     text-decoration: none;
     color: #fff;
 }
+#hide-sidebar {
+    display: none;
+}
 
-
-.bi-list{
+.bi-list-button{
     display:none;
 }
 @media(max-width: 767px) {
     .bi-heart-fill{
         display:none;
     }
-    .bi-list{
+    .bi-list-button{
         display:inline;
     }
-}
+    #hide-sidebar{
+        display:inline;
+    }
+};

@@ -10,6 +10,9 @@ for (let index = 0; index < blogs.length; index++) {
     });
 }
 
+
+// Search
+
 const searchInput = document.getElementById('searchTerm');
 const searchResults = document.getElementById('searchResults');
 // let searchBox = document.getElementById('searchTerm');
@@ -29,7 +32,7 @@ searchBox.addEventListener('blur', function () {
         updateSearchResults("remove");
 });
 
-document.addEventListener('click', function (event) {
+document.addEventListener('pointer-down', function (event) {
     let target = event.target;
     while (target != null) {
         if (target == searchResults) {
@@ -41,15 +44,13 @@ document.addEventListener('click', function (event) {
     updateSearchResults("remove");
 });
 
-searchBox.addEventListener('click', function (event) {
+searchBox.addEventListener('pointer-down', function (event) {
     event.stopPropagation();
 });
 
-searchResults.addEventListener('click', function (event) {
+searchResults.addEventListener('pointer-down', function (event) {
     event.stopPropagation();
 });
-
-
 
 searchInput.addEventListener('keyup', async () => {
     const searchTerm = searchInput.value.trim();
@@ -99,14 +100,33 @@ function updateSearchResults(results) {
         }
         resultsHTML += `</ul>`;
     } else {
-        resultsHTML = '<p>No results found for your search term.</p>';
+        // resultsHTML = '<p>No results found for your search term.</p>';
+        resultsHTML = `
+        <ul>
+        <li>
+        <a href = "" >
+        No results found for your search term.
+        </a >
+        </li >
+        </ul>
+        `;
+
     }
     searchResults.innerHTML = resultsHTML;
 }
 
-const menuButton = document.getElementById('menu-button');
-const sidebar = document.getElementById('side_nav');
 
-menuButton.addEventListener('click', function () {
+// Sidebar
+
+const sidebar = document.getElementById('side_nav');
+const menuButton = document.getElementById('menu-button');
+const hideButton = document.getElementById('hide-sidebar');
+
+menuButton.onpointerdown = function () {
+    console.log("clicked")
     sidebar.classList.toggle('active');
-});
+}
+hideButton.onpointerup = function () {
+    sidebar.classList.remove('active');
+}
+console.log("something")    

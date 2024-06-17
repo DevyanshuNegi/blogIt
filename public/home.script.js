@@ -51,10 +51,16 @@ searchBox.addEventListener('pointer-down', function (event) {
 searchResults.addEventListener('pointer-down', function (event) {
     event.stopPropagation();
 });
+const clearButton = document.getElementById("clearButton");
+// const inputField = document.getElementById("myInput");
+
+clearButton.addEventListener("click", function () {
+    searchInput.value = "";
+    updateSearchResults("remove");
+});
 
 searchInput.addEventListener('keyup', async () => {
     const searchTerm = searchInput.value.trim();
-    console.log(searchTerm)
     if (!searchTerm) {
         searchResults.innerHTML = ''; // Clear results if search term is empty
         return;
@@ -67,7 +73,6 @@ searchInput.addEventListener('keyup', async () => {
         }
         const results = await response.json();
 
-        console.log("results", results);
         // Update search results based on the received data (results)
         updateSearchResults(results);
     } catch (error) {
@@ -123,10 +128,8 @@ const menuButton = document.getElementById('menu-button');
 const hideButton = document.getElementById('hide-sidebar');
 
 menuButton.onpointerdown = function () {
-    console.log("clicked")
     sidebar.classList.toggle('active');
 }
 hideButton.onpointerup = function () {
     sidebar.classList.remove('active');
 }
-console.log("something")    

@@ -3,13 +3,13 @@
     <%- include("../partials/sidebar.ejs") %>
 
 
-        <div class="parent-div">
+        <div class="main-content-parent parent-div">
 
 
 
             <div class="blog-details-title text-light">
                 <img class="blog-details-title-image" src=<%=blog.thumbnail %> alt=<%= blog.title %>>
-                    <div class="m-5">
+                    <div class="m-3 m-md-5 m-sm-3 ">
 
                         <div>
                             <h1>
@@ -31,8 +31,8 @@
             </div>
 
 
-            <div class="p-5 blog-details-content">
-                <p>
+            <div class="m-3 m-md-5 m-sm-3 blog-details-content">
+                <p style="text-align: justify;">
                     <%= blog.content %>
                 </p>
             </div>
@@ -62,7 +62,7 @@
 
                     <% } else { %>
 
-                        <a class="btn btn-primary" href="/auth">SignIn to add comment</a>
+                        <a class="btn btn-primary" href="/users/auth">SignIn to add comment</a>
                         <% } %>
                             <hr>
 

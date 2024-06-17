@@ -288,7 +288,6 @@ const addComment = asyncHandler(async (req, res) => {
 
 const blogSearch = (async(req, res) => {
     const searchTerm = req.query.searchTerm?.trim().toLowerCase(); // Sanitize and lowercase search term
-    console.log("searchTerm", searchTerm);
     if (!searchTerm) {
         return res.status(400).json({ message: 'Please provide a search term' });
     }

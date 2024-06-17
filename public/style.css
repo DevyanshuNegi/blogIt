@@ -221,10 +221,10 @@ i {
 
 }
 
-.main-content-parent{
+.main-content-parent {
     /* height: 100vh; */
     /* background-color: red; */
-    margin:0px;
+    margin: 0px;
     margin-left: 250px;
     padding-right: 5px;
 }
@@ -233,7 +233,9 @@ i {
     #side_nav {
         margin-left: -250px;
         position: absolute;
-        min-height: 100vh;
+        /* min-height: 100vh; */
+        height: calc(103vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+        /* height: 80vh!important; */
         z-index: 1;
 
     }
@@ -242,23 +244,25 @@ i {
         margin-left: 0;
     }
 
-    .main-content-parent{
+    .main-content-parent {
         margin-left: 0px;
     }
 }
 
-body{
+body {
     /* overflow: hidden */
-    overflow-x:visible;
+    overflow-x: visible;
 }
 
-.search-and-results{
+.search-and-results {
     position: relative;
 }
-#searchResults{
+
+#searchResults {
     background-color: red;
 }
-#searchResults{
+
+#searchResults {
     position: absolute;
     background-color: rgb(68, 68, 68);
     z-index: 100;
@@ -267,41 +271,65 @@ body{
     border-radius: 20px;
     width: 60vw;
 }
+
 #searchResults ul {
     /* list-style: none; */
     margin-top: 10px;
 }
+
 #searchResults ul li {
     padding: 10px;
     border-bottom: 1px solid #fff;
     color: #fff;
 }
+
 #searchResults ul li:hover {
     background-color: #7a7a7a;
     color: #000;
 }
-#searchResults ul li:last-child{
+
+#searchResults ul li:last-child {
     border-bottom: none;
 }
-#searchResults ul li a{
+
+#searchResults ul li a {
     text-decoration: none;
     color: #fff;
 }
+
 #hide-sidebar {
     display: none;
 }
 
-.bi-list-button{
-    display:none;
+.bi-list-button {
+    display: none;
 }
+
+.center-search {
+    display: none;
+}
+
 @media(max-width: 767px) {
-    .bi-heart-fill{
-        display:none;
+    .bi-heart-fill {
+        display: none;
     }
-    .bi-list-button{
-        display:inline;
+
+    .bi-list-button {
+        display: inline;
     }
-    #hide-sidebar{
-        display:inline;
+
+    #hide-sidebar {
+        display: inline;
     }
-};
+
+    .center-search {
+        display: block;
+    }
+
+    #searchResults {
+        right: 10vw;
+        border-radius: 20px;
+        width: 90vw;
+    }
+}
+

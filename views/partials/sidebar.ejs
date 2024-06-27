@@ -40,17 +40,33 @@
         </li>
 
         </li>
+        
+        <li>
+            <% if (user==null) { %>
+                <!-- <a href="/users/auth" class="btn btn-info position-absolute" style="right: 20px;">Login/SignUp</a> -->
+                <a href="/users/auth" class="btn "> <i class="bi bi-box-arrow-in-right h5" style="width: ;"></i> Login / SignUp</a>
+                <% } else { %>
+                    <!-- <form action="/users/logout" method="post" class="position-absolute" style="right: 20px; top:0px"> -->
+                    <form action="/users/logout" method="post">
+
+                        <button type="submit" class="">Logout</button>
+                        <!-- <a href="/users/logout" class="btn btn-info position-absolute" style="right: 20px;">Logout</a> -->
+                    </form>
+                    <% } %>
+        </li>
+
+<hr>
         <li class="">
             <% if (user) { %>
                 <a href="/history" class="text-decoration-none px-3 py-3 my-1 d-block">
                     <i class="bi bi-clock-fill h5"></i>
-                    History
+                    History (onProgress)
                 </a>
-
+        
                 <% } else { %>
                     <a href="/users/auth" class="text-decoration-none px-3 py-3 my-1 d-block">
                         <i class="bi bi-clock-fill h5"></i>
-                        History
+                        History (onProgress)
                     </a>
                     <% } %>
         </li>
@@ -63,12 +79,12 @@
         <ul class="list-unstyled px-2 ">
             <li class="">
                 <a href="" class="text-decoration-none px-3 py-2 d-block">
-                    <SettingsRoundedIcon /> Settings
+                    <SettingsRoundedIcon /> Settings (on Progress)
                 </a>
             </li>
             <li class="">
                 <a href="" class="text-decoration-none px-3 py-2 d-block">
-                    <FeedbackRoundedIcon /> Feedback
+                    <FeedbackRoundedIcon /> Feedback (on Progress)
                 </a>
             </li>
 

@@ -1,5 +1,24 @@
 
 blogs = document.getElementsByClassName("blog-container")
+var isActive = false;
+
+document.onclick = function (event) {
+    console.log("clicked")
+    if (event.target.id !== "searchTerm") {
+        updateSearchResults("remove");
+    }
+    if (event.target.id !== "side_nav" && event.target.id !== "menu-button" && event.target.id !== "hide-sidebar") {
+        if (isActive) {
+            sidebar.classList.remove('active');
+            isActive = false;
+        }else {
+
+            isActive = true;
+        }
+
+    }
+
+}
 
 
 for (let index = 0; index < blogs.length; index++) {
@@ -21,15 +40,15 @@ let searchBox = document.getElementById('search-and-results');
 
 // to remove search results when clicked outside
 searchBox.addEventListener('blur', function () {
-        let target = event.target;
-        while (target != null) {
-            if (target == searchResults) {
-                return;
-            }
-            target = target.parentElement;
+    let target = event.target;
+    while (target != null) {
+        if (target == searchResults) {
+            return;
         }
-        // updateSearchResults("remove");
-        updateSearchResults("remove");
+        target = target.parentElement;
+    }
+    // updateSearchResults("remove");
+    updateSearchResults("remove");
 });
 
 document.addEventListener('pointer-down', function (event) {
@@ -84,7 +103,7 @@ searchInput.addEventListener('keyup', async () => {
 function updateSearchResults(results) {
     // Implement logic to display search results in the searchResults element
     // You can use techniques like innerHTML or template literals
-    if(results === "remove"){
+    if (results === "remove") {
         searchResults.innerHTML = '';
         return;
     }
@@ -132,4 +151,55 @@ menuButton.onpointerdown = function () {
 }
 hideButton.onpointerup = function () {
     sidebar.classList.remove('active');
+    isActive = false;
 }
+
+
+
+// // theeme
+// document.addEventListener('DOMContentLoaded', () => {
+//     const themeSelect = document.getElementById('theme-select');
+
+//     const optionIcons = {
+//         default: '<i class="bi bi-brightness-high"></i> Default',
+//         dark: '<i class="bi bi-moon"></i> Dark',
+//         light: '<i class="bi bi-sun"></i> Light'
+//     };
+
+//     // Add icons to options
+//     Array.from(themeSelect.options).forEach(option => {
+//         option.innerHTML = optionIcons[option.value];
+//     });
+
+//     const themeStylesheet = document.getElementById('themeStylesheet');
+
+//     // Function to switch themes
+//     function switchTheme(theme) {
+//         switch (theme) {
+//             case 'dark':
+//                 themeStylesheet.setAttribute('href', 'dark.css');
+//                 break;
+//             case 'light':
+//                 themeStylesheet.setAttribute('href', 'light.css');
+//                 break;
+//             default:
+//                 themeStylesheet.setAttribute('href', 'default.css');
+//                 break;
+//         }
+//     }
+
+//     // Event listener for the select dropdown
+//     themeSelect.addEventListener('change', (event) => {
+//         switchTheme(event.target.value);
+//     });
+
+//     // Load the preferred theme from local storage if available
+//     const savedTheme = localStorage.getItem('theme') || 'default';
+//     themeSelect.value = savedTheme;
+//     switchTheme(savedTheme);
+
+//     // Save the theme selection to local storage
+//     themeSelect.addEventListener('change', (event) => {
+//         localStorage.setItem('theme', event.target.value);
+//     });
+// });

@@ -258,10 +258,7 @@ body {
     position: relative;
 }
 
-#searchResults {
-    background-color: red;
-}
-
+/* Middle search results */
 #searchResults {
     position: absolute;
     background-color: rgb(68, 68, 68);
@@ -271,31 +268,58 @@ body {
     border-radius: 20px;
     width: 60vw;
 }
-
 #searchResults ul {
     /* list-style: none; */
     margin-top: 10px;
 }
-
 #searchResults ul li {
     padding: 10px;
     border-bottom: 1px solid #fff;
     color: #fff;
 }
-
 #searchResults ul li:hover {
     background-color: #7a7a7a;
     color: #000;
 }
-
 #searchResults ul li:last-child {
     border-bottom: none;
 }
-
 #searchResults ul li a {
     text-decoration: none;
     color: #fff;
 }
+
+/* side search results */
+#sideSearchResults {
+    position: absolute;
+    background-color: rgb(68, 68, 68);
+    z-index: 100;
+    top: 40px;
+    right: 0px;
+    border-radius: 20px;
+    width: 60vw;
+}
+#sideSearchResults ul {
+    /* list-style: none; */
+    margin-top: 10px;
+}
+#sideSearchResults ul li {
+    padding: 10px;
+    border-bottom: 1px solid #fff;
+    color: #fff;
+}
+#sideSearchResults ul li:hover {
+    background-color: #7a7a7a;
+    color: #000;
+}
+#sideSearchResults ul li:last-child {
+    border-bottom: none;
+}
+#sideSearchResults ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
 
 #hide-sidebar {
     display: none;

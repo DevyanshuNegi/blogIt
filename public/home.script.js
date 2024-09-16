@@ -1,6 +1,7 @@
 
 blogs = document.getElementsByClassName("blog-container")
 var isActive = false;
+const sidebar = document.getElementById('side_nav');
 
 document.onclick = function (event) {
     console.log("clicked")
@@ -33,6 +34,7 @@ for (let index = 0; index < blogs.length; index++) {
 // Search
 
 const searchInput = document.getElementById('searchTerm');
+const sideSearchInput = document.getElementById('sideSearchTerm');
 const searchResults = document.getElementById('searchResults');
 // let searchBox = document.getElementById('searchTerm');
 let searchBox = document.getElementById('search-and-results');
@@ -78,8 +80,12 @@ clearButton.addEventListener("click", function () {
     updateSearchResults("remove");
 });
 
+
+// for center search bar
 searchInput.addEventListener('keyup', async () => {
     const searchTerm = searchInput.value.trim();
+    console.log(searchTerm);
+    console.log("Hello world");
     if (!searchTerm) {
         searchResults.innerHTML = ''; // Clear results if search term is empty
         return;
@@ -99,6 +105,31 @@ searchInput.addEventListener('keyup', async () => {
         searchResults.innerHTML = '<p>Error fetching results.</p>';
     }
 });
+// for side search bar
+sideSearchInput.addEventListener('keyup', async () => {
+    const sideSearchTerm = sideSearchInput.value.trim();
+    console.log(sideSearchTerm);
+    console.log("Hello world");
+    if (!searchTerm) {
+        searchResults.innerHTML = ''; // Clear results if search term is empty
+        return;
+    }
+
+    try {
+        const response = await fetch(`/blogSearch?searchTerm=${searchTerm}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch search results');
+        }
+        const results = await response.json();
+
+        // Update search results based on the received data (results)
+        updateSearchResults(results);
+    } catch (error) {
+        console.error(error);
+        searchResults.innerHTML = '<p>Error fetching results.</p>';
+    }
+});
+
 
 function updateSearchResults(results) {
     // Implement logic to display search results in the searchResults element
@@ -142,7 +173,6 @@ function updateSearchResults(results) {
 
 // Sidebar
 
-const sidebar = document.getElementById('side_nav');
 const menuButton = document.getElementById('menu-button');
 const hideButton = document.getElementById('hide-sidebar');
 

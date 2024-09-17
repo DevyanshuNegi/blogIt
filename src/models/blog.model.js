@@ -24,7 +24,7 @@ const blogSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        default: "",
+        default: "this is a default description",
         // requierd: true,
         trim: true,
     },

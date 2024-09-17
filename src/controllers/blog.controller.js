@@ -6,6 +6,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Comment } from "../models/comment.model.js";
 import { History } from "../models/history.model.js";
 import mongoose from "mongoose";
+import sanitize from "sanitize-html";
 // import { localBlogHistory } from "../constants.js"; 
 
 // var blogIdList = [];
@@ -31,7 +32,7 @@ async function getMostRecentVisitedBlogs(userId) {
                 path: Blog, // Field name referencing the blog
             }); // Populate with specific fields
 
-        console.log("inside function ", blogs);
+        // console.log("inside function ", blogs);
         // return blogs.map(history => history.blog); // Extract blog IDs
         return blogs;
     } catch (error) {
@@ -86,7 +87,7 @@ const createBlogPage = asyncHandler(async (req, res) => {
     var user = req.user;
     res.render("pages/createBlog.ejs", { user });
 })
-
+/*
 const createBlog = asyncHandler(async (req, res) => {
     const user = req.user;
     const { title, content, categories } = req.body;
@@ -122,7 +123,70 @@ const createBlog = asyncHandler(async (req, res) => {
 
     res.redirect("/blog" + "?id=" + blog._id)
 
-})
+})*/
+
+
+// Route to handle blog creation
+const createBlog = asyncHandler(async (req, res) => {
+    const user = req.user;
+    const { title, content, categories, desc } = req.body;
+    const localFilePath = req.file.path;
+    const isPublished = true;
+
+
+    // Check for empty fields
+    const isEmpty = [title, content, localFilePath].some(field => !field || field.trim() === "");
+    if (isEmpty) {
+        return res.redirect("/addBlog");
+    }
+
+    // Sanitize the content to prevent XSS attacks
+    const sanitizedContent = sanitize(content, {
+        allowedTags: [
+            'p', 'b', 'i', 'strong', 'em', 'u', 'strike', 'blockquote',
+            'ul', 'ol', 'li', 'a', 'img', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+            'pre', 'code', 'br', 'hr', 'div', 'span', 'iframe'
+        ],
+        allowedAttributes: {
+            'a': ['href', 'name', 'target'],
+            'img': ['src', 'alt', 'title', 'width', 'height'],
+            'iframe': ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen'],
+            'div': ['class', 'style'],
+            'span': ['class', 'style'],
+            '*': ['style'] // Allow styles globally
+        },
+        allowedStyles: {
+            '*': {
+                'color': [/^#(0x)?[0-9a-f]+$/i, /^rgb\(/],
+                'text-align': [/^left$/, /^right$/, /^center$/, /^justify$/],
+                'font-weight': [/^\d+$/, /^bold$/],
+                'font-size': [/^\d+(?:px|em|%)$/],
+                'background-color': [/^#(0x)?[0-9a-f]+$/i, /^rgb\(/],
+                'text-decoration': [/^underline$/, /^line-through$/]
+            }
+        },
+        selfClosing: ['img', 'br', 'hr'],
+        enforceHtmlBoundary: true
+    });
+
+    // Upload the thumbnail image to cloudinary
+    const thumbnail = await uploadOnCloudinary(localFilePath);
+
+    // Create a new blog post with sanitized content
+    const blog = await Blog.create({
+        title: title,
+        content: sanitizedContent, // Store sanitized content
+        description: desc,
+        author: user._id,
+        category: categories,
+        thumbnail: thumbnail.url,
+        isPublished: isPublished
+    });
+
+    // Redirect to the blog page after successful creation
+    res.redirect("/blog" + "?id=" + blog._id);
+});
+
 
 const homePage = asyncHandler(async (req, res) => {
     const category = req.query.category;

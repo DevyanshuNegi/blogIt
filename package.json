@@ -5,7 +5,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "build": "echo 'No build step required'",
+    "test": "mocha || echo 'No test specified'",
+    "lint": "eslint .",
+    "deploy": "npm run build && npm run start",
+    "prod": "pm2 start index.js --name my-app"
   },
   "repository": {
     "type": "git",

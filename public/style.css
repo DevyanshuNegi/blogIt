@@ -59,6 +59,25 @@ hr.h-color {
     color: #fff;
 }
 
+.sidebar li button{
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    color: white;
+    text-align: left;
+}
+
+.sidebar li button:hover {
+    background-color: purple;
+    color: white;
+    font-weight: 700;
+
+}
+
+.sidebar li form {
+}
+
 .sidebar-bottom {
     position: absolute;
     bottom: 10px;

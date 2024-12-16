@@ -187,6 +187,15 @@ const homePage = asyncHandler(async (req, res) => {
     });
 })
 
+const myBlogsPage = asyncHandler(async (req, res) => {
+    var user = req.user;
+    const userId = user._id;
+
+    const blogs = await Blog.find({ author: userId })
+
+    res.render("pages/myBlogs.ejs", { blogs, user });
+});
+
 const blogDetailPage = asyncHandler(async (req, res) => {
     const user = req.user;
 
@@ -309,4 +318,4 @@ const blogSearch = (async(req, res) => {
     }
 });
 
-export { createBlog, homePage, blogDetailPage, addComment, getHomePageData, createBlogPage, blogSearch}
+export { createBlog, homePage, blogDetailPage, addComment, getHomePageData, createBlogPage, blogSearch, myBlogsPage}

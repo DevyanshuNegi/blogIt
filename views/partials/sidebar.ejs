@@ -40,36 +40,57 @@
         </li>
 
         </li>
-        
-        <li>
-            <% if (user==null) { %>
+
+        <% if (user==null) { %>
+            <li>
                 <!-- <a href="/users/auth" class="btn btn-info position-absolute" style="right: 20px;">Login/SignUp</a> -->
-                <a href="/users/auth" class="btn "> <i class="bi bi-box-arrow-in-right h5" style="width: ;"></i> Login / SignUp</a>
-                <% } else { %>
-                    <!-- <form action="/users/logout" method="post" class="position-absolute" style="right: 20px; top:0px"> -->
+                <a href="/users/auth" class="btn "> <i class="bi bi-box-arrow-in-right h5" style="width: ;"></i> Login /
+                    SignUp</a>
+            </li>
+            <% } else { %>
+                <li>
                     <form action="/users/logout" method="post">
-
-                        <button type="submit" class="">Logout</button>
-                        <!-- <a href="/users/logout" class="btn btn-info position-absolute" style="right: 20px;">Logout</a> -->
+                        <button type="submit" class="btn p-2 py-3">
+                            <i class="bi bi-box-arrow-in-right h5"></i>
+                            Logout
+                        </button>
                     </form>
-                    <% } %>
-        </li>
+                </li>
 
-<hr>
-        <li class="">
-            <% if (user) { %>
-                <a href="/history" class="text-decoration-none px-3 py-3 my-1 d-block">
-                    <i class="bi bi-clock-fill h5"></i>
-                    History (onProgress)
-                </a>
-        
-                <% } else { %>
-                    <a href="/users/auth" class="text-decoration-none px-3 py-3 my-1 d-block">
-                        <i class="bi bi-clock-fill h5"></i>
-                        History (onProgress)
-                    </a>
-                    <% } %>
-        </li>
+                <% } %>
+
+                    <hr>
+                    <li class="">
+                        <% if (user) { %>
+                            <a href="/history" class="text-decoration-none px-3 py-3 my-1 d-block">
+                                <i class="bi bi-clock-fill h5"></i>
+                                History (onProgress)
+                            </a>
+
+                            <% } else { %>
+                                <a href="/users/auth" class="text-decoration-none px-3 py-3 my-1 d-block">
+                                    <i class="bi bi-clock-fill h5"></i>
+                                    History (onProgress)
+                                </a>
+                            <% } %>
+                    </li>
+                    <li>
+                        <% if (user==null) { %>
+
+                            <a href="/users/auth" class="text-decoration-none px-3 py-3 my-1 d-block">
+                                <!-- <i class="bi bi-house-door-fill h5"></i> -->
+                                <i class="bi bi-postcard-heart-fill h5"></i>
+                                Your Blogs
+                            </a>
+                            <% } else { %>
+                                <a href="/myblogs" class="text-decoration-none px-3 py-3 my-1 d-block h5">
+                                    <!-- <i class="bi bi-house-door-fill h5"></i> -->
+                                    <i class="bi bi-postcard-heart-fill"></i>
+                                    Your Blogs
+                                </a>
+                            <% } %>
+                    </li>
+
     </ul>
 
     <hr class="h-color mx-2">

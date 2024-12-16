@@ -1,5 +1,5 @@
 import express from "express"
-import cors from "cors"
+// import cors from "cors"
 import cookieParser from "cookie-parser"
 import bodyParser from "body-parser"
 
@@ -7,10 +7,10 @@ const app = express()
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true
-}))
+// app.use(cors({
+//     origin: process.env.CORS_ORIGIN,
+//     credentials: true
+// }))
 
 app.use(express.json({ limit: "10kb" }));
 

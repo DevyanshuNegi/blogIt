@@ -7,7 +7,7 @@ export var localBlogHistory = [];
 
 // PORT = 8000
 // CORS_ORIGIN = *
-//     MONGODB_URI = "mongodb+srv://devyanshunegi:asdfjkl;@cluster0.xximlf8.mongodb.net"
+// MONGODB_URI = "mongodb+srv://devyanshunegi:asdfjkl;@cluster0.xximlf8.mongodb.net"
 
 
 
